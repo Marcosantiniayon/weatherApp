@@ -2,6 +2,7 @@ let locationSearch = 'Phoenix'
 const locationInput = document.querySelector('.locationInput');
 const submitBtn = document.querySelector('.submit');
 const locationOutput = document.querySelector('.locationOutput');
+const timeOutput = document.querySelector('.timeOutput');
 
 submitBtn.addEventListener('click', function (event) {
     event.preventDefault();
@@ -35,6 +36,8 @@ async function getWeather(locationSearch) {
 
       //Display Location 
       locationOutput.innerHTML = parseLocation(weatherData.location.name);
+      timeOutput.innerHTML = " as of " + "0:00";
+
   } catch (e){
     console.log(e)
   };  
