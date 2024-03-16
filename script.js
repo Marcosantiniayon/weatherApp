@@ -1,7 +1,11 @@
-let locationSearch = 'Phoenix'
 const locationInput = document.querySelector('.locationInput');
 const locationOutput = document.querySelector('.locationOutput');
 const timeOutput = document.querySelector('.timeOutput');
+const currentTemp = document.querySelector('.currentTemp');
+const todayLow = document.querySelector('.todayLow');
+const todayHigh = document.querySelector('.todayHigh');
+let locationSearch = 'Phoenix'
+let todayData = document.querySelector('.todayData');
 
 locationInput.addEventListener('keypress', function (event) {
     if (event.key === 'Enter') {
@@ -13,29 +17,29 @@ locationInput.addEventListener('keypress', function (event) {
 async function getWeather(locationSearch) {
   //Set up API url request + searchSubject\
     console.log(locationSearch);
-    const url = `https://api.tomorrow.io/v4/weather/forecast?location=${locationSearch}&units=imperial&apikey=eXZliAD3an9k8KdO5lUN64n8o5hsVc0f`;
+    const realtime = `https://api.tomorrow.io/v4/weather/realtime?location=${locationSearch}&units=imperial&apikey=eXZliAD3an9k8KdO5lUN64n8o5hsVc0f`;
+    const forecast = `https://api.tomorrow.io/v4/weather/forecast?location=${locationSearch}&units=imperial&apikey=eXZliAD3an9k8KdO5lUN64n8o5hsVc0f`;
     locationOutput.innerHTML = 'Loading...';
   try {
       //Make fetch request and stores it as response
-      const response = await fetch(url, { mode: 'cors' });
+      const realtimeResponse = await fetch(realtime, { mode: 'cors' });
+      const forecastResponse = await fetch(forecast, { mode: 'cors' });
+
       
       //Store the JSON formated response into 'weatherData' and performs action on it
-      const weatherData = await response.json();
-      console.log(weatherData.timelines.daily);
-
-      //Daily Data
-      const dailyData = weatherData.timelines.daily;
-      console.log(dailyData);
-      dailyData.forEach(day => {
-          console.log(day.time + " | Avg: " + day.values.temperatureAvg + " | Min: " + day.values.temperatureMin + " | Max: " + day.values.temperatureMax);
-      });
-
-      //
-
+      const realtimeData = await realtimeResponse.json();
+      console.log(realtimeData);
+      const forecastData = await forecastResponse.json();
+      console.log(forecastData); 
+    
 
       //Display Location 
-      locationOutput.innerHTML = parseLocation(weatherData.location.name);
-      timeOutput.innerHTML = " as of " + "0:00";
+      locationOutput.innerHTML = parseLocation(realtimeData.location.name);
+
+      //Update Today's Data
+      currentTemp.innerHTML = realtimeData.data.values.temperature + "°F";
+      todayLow.innerHTML = forecastData.timelines.daily[0].values.temperatureMin + "°F";
+      todayHigh.innerHTML = forecastData.timelines.daily[0].values.temperatureMax + "°F";
 
   } catch (e){
     console.log(e)
