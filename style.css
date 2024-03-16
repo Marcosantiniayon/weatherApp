@@ -13,11 +13,20 @@ body {
     background-color: #c9ccda;
 }
 
-header {
-    padding: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+footer {
+    padding: 5px;
+    bottom: 0;
+    flex-shrink: 0;
+    background-color:#9a9fb6;
+    text-align: center;
+}
+
+.locationInput{
+    width: 350px;
+    height: 25px;
+    padding: 8px;
+    border-radius: 12px;
+    border: 0;
 }
 
 .main {
@@ -29,96 +38,32 @@ header {
     align-items: center;
 }
 
-footer {
-    padding: 5px;
-    bottom: 0;
-    flex-shrink: 0;
-    background-color:#9a9fb6;
-    text-align: center;
-}
-
-/* ----- */
-
-.output{
-    width: 100%;
+.today{
+    width: 40%;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-
-/* .todayDiv, .forecastDiv{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-} */
-
-.daysDiv{
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, .5fr));
-    gap: 12px;
-    justify-content: center;
-}
-
-.dayCard{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border-radius: 12px;
-    box-shadow: 4px 2px 10px #635f5f;
-    padding: 12px;
-    background-color: aliceblue;
-    color: #7b8094;
-}
-
-.dayCardData{
-    width: 100%;
-    display: flex;
-    justify-content: space-evenly;
-}
-h1{
-    margin: 0px 0px 10px 0px;
-}
-
-h2{
-    text-align: center;
-    margin-top: 0;
-}
-h3,h4 {
-    margin: 0px;
-}
-
-.generalInfo{
-    display: flex;
-    justify-content: space-between;
-}
-.generalInfo-right{
-    display: flex;
-    align-items: center;
-}
-
-.mainData{
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.todayDiv{
-    display: flex;
-    flex-direction: column;
-    width: 80%;
-    height: 40%;
-    margin-top: 60px;
-    padding: 16px 12px 16px 12px;
-    background-color: aliceblue;
-    color: #7b8094;
-    border-radius: 12px;
-    box-shadow: 4px 2px 10px #635f5f;
-}
-
-.forecastDiv{
-    margin-top: 60px;
-    width: 80%;
-    height: 40%;
-}
+    .todayData {
+        width: 100%;
+        display: flex;
+        align-items: center;
+    }
+    .todayTemps{
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+        .todayLowHigh{
+            display: flex;
+            gap: 20px;
+        }
+    .todayInfo {
+        width: 100%;
+        flex: 1;
+        padding: 0 10px;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }

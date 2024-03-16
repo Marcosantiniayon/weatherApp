@@ -8,70 +8,23 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div></div>
     <div class="main">
         <form action="">
             <input class="locationInput" type="text" placeholder="City or Zip">
-            <button class="submit">Submit</button>
         </form>
-        <div class="output">
-            <div class="todayDiv">
-                <div class="generalInfo">
-                    <h1 class="mainAvg">94°F</h1>
-                    <div class="generalInfo-right">
-                        <h3 class="locationOutput"></h3>
-                        <h4 class="timeOutput"></h4>
+        <div class="today">
+            <p class="locationOutput"></p>
+            <div class="todayData">
+                <div class="todayTemps">
+                    <p class="currentTemp">65F</p>
+                    <div class="todayLowHigh">
+                        <p class="todayLow">L: 40F</p>
+                        <p class="todayHigh">H: 75F</p>
                     </div>
                 </div>
-                <div class="mainData">
-                    <h3 class="mainMin">Low: 72°F</h3>
-                    <h3 class="mainHigh">High: 110°F</h3>
-                    <h3 class="mainWind">Wind Speed: 14 MPH</h3>
-                </div>
-            </div>
-            <div class="forecastDiv">
-                <h2>5 Day Forecast</h2>
-                <div class="daysDiv">
-                    <div class="dayCard">
-                        <h3>Monday</h3>
-                        <h4 class="dayCardAvg">94°F</h4>
-                        <div class="dayCardData">
-                            <span class="dayCardMin">72°F</span>
-                            <span class="dayCardHigh">110°F</span>
-                        </div>
-                    </div>
-                    <div class="dayCard">
-                        <h3>94°F</h3>
-                        <div class="dayCardData">
-                            <span class="dayCardMin">72°F</span>
-                            <span class="dayCardHigh">110°F</span>
-                            <span class="dayCardPrec">14%</span>
-                        </div>
-                    </div>
-                    <div class="dayCard">
-                        <h3>94°F</h3>
-                        <div class="dayCardData">
-                            <span class="dayCardMin">72°F</span>
-                            <span class="dayCardHigh">110°F</span>
-                            <span class="dayCardPrec">14%</span>
-                        </div>
-                    </div>
-                    <div class="dayCard">
-                        <h3>94°F</h3>
-                        <div class="dayCardData">
-                            <span class="dayCardMin">72°F</span>
-                            <span class="dayCardHigh">110°F</span>
-                            <span class="dayCardPrec">14%</span>
-                        </div>
-                    </div>
-                    <div class="dayCard">
-                        <h3>94°F</h3>
-                        <div class="dayCardData">
-                            <span class="dayCardMin">72°F</span>
-                            <span class="dayCardHigh">110°F</span>
-                            <span class="dayCardPrec">14%</span>
-                        </div>
-                    </div>
+                <div class="todayInfo">
+                    <img class="todayIcon" src="icons/clear-day.png" alt="">
+                    <p class="todayDescription">Sunny</p>
                 </div>
             </div>
         </div>

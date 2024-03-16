@@ -1,14 +1,13 @@
 let locationSearch = 'Phoenix'
 const locationInput = document.querySelector('.locationInput');
-const submitBtn = document.querySelector('.submit');
 const locationOutput = document.querySelector('.locationOutput');
 const timeOutput = document.querySelector('.timeOutput');
 
-submitBtn.addEventListener('click', function (event) {
-    event.preventDefault();
-
-    locationSearch = locationInput.value;
-    getWeather(locationSearch);
+locationInput.addEventListener('keypress', function (event) {
+    if (event.key === 'Enter') {
+        event.preventDefault(); 
+        getWeather(locationInput.value);
+    }
 });
 
 async function getWeather(locationSearch) {
