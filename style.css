@@ -10,7 +10,8 @@ body {
     display: flex;
     flex-direction: column;
     color: #7b8094;
-    background-color: #c9ccda;
+    background-color: #b8bbcc;
+    font-family: "Libre Franklin", sans-serif;
 }
 
 footer {
@@ -21,12 +22,23 @@ footer {
     text-align: center;
 }
 
+h1{
+    font-weight: 500;
+    font-size: 4.5REM;
+    margin: 0px;
+}
+h4{
+    font-weight: 500;
+    margin: 0;
+}
+
 .locationInput{
     width: 350px;
     height: 25px;
     padding: 8px;
     border-radius: 12px;
     border: 0;
+    color:#7b8094
 }
 
 .main {
@@ -39,15 +51,16 @@ footer {
 }
 
 .today{
-    width: 40%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
     .todayData {
-        width: 100%;
+        width: 20%;
         display: flex;
         align-items: center;
+        justify-content: center;
     }
     .todayTemps{
         flex: 1;
@@ -67,3 +80,7 @@ footer {
         align-items: center;
         flex-direction: column;
     }
+        .todayIcon{
+            margin: 0;
+            padding: 12px;
+        }
