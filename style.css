@@ -60,43 +60,37 @@ h4{
     flex-direction: column;
     align-items: center;
 }
-    .todayTop{
-        display: flex;
-        align-items: center;
-        gap: 24px;
-    }
     .todayData {
         width: 24%;
-        display: flex;
+        display: grid;
+        grid-auto-flow: column;
+        grid-template: 4fr 1fr / 1fr 1fr;
         align-items: center;
         justify-content: center;
     }
-    .todayTemps{
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-        .todayLowHigh{
+        .todayTop {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+        .todayLowHigh {
             display: flex;
             gap: 20px;
         }
-    .todayInfo {
-        width: 100%;
-        flex: 1;
-        padding: 0 10px;
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-    }
         .icon{
             margin: 0;
             padding: 12px;
+        }
+        .todayDescription{
+            justify-self: center;
         }
 
 .unitBtn{
     border-radius: 24px;
     align-self: baseline;
+}
+.unitBtn:hover{
+    cursor: pointer;
 }
     .metric{
         border: 2px solid #7b8094;
