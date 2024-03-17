@@ -24,12 +24,16 @@ footer {
 
 h1{
     font-weight: 500;
-    font-size: 4.5REM;
+    font-size: 6REM;
     margin: 0px;
 }
 h4{
     font-weight: 500;
     margin: 0;
+}
+.icon{
+    margin: 0;
+    padding: 0px;
 }
 
 .locationInput{
@@ -56,6 +60,11 @@ h4{
     flex-direction: column;
     align-items: center;
 }
+    .todayTop{
+        display: flex;
+        align-items: center;
+        gap: 24px;
+    }
     .todayData {
         width: 24%;
         display: flex;
@@ -84,3 +93,17 @@ h4{
             margin: 0;
             padding: 12px;
         }
+
+.unitBtn{
+    border-radius: 24px;
+    align-self: baseline;
+}
+    .metric{
+        border: 2px solid #7b8094;
+        color: #7b8094;
+    }
+    .imperial {
+        border: 2px solid #ffffff;
+        color: #ffffff;
+        background-color: #7b8094;
+    }
