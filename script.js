@@ -45,7 +45,6 @@ async function getGeoCode(locationSearch) {
       
       //Store the JSON 
       const geocode = await response.json();
-      console.log(geocode[0]);
       city = geocode[0].name;
       state = geocode[0].state;
       country = geocode[0].country;
@@ -75,7 +74,6 @@ async function getWeather(latitude, longitude) {
       
         //Store the JSON 
         const weatherData = await response.json();
-        console.log(weatherData);
 
         //Store values
         currentTemp.innerHTML = Math.round(weatherData.main.temp);
@@ -106,7 +104,6 @@ async function getWeather(latitude, longitude) {
   } catch (e){
     console.log(e)
   };  
-  
 }
 
 getGeoCode(locationSearch);
