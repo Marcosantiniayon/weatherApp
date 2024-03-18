@@ -6,13 +6,12 @@ const locationInput = document.querySelector('.locationInput');
 const locationOutput = document.querySelector('.locationOutput');
 const timeOutput = document.querySelector('.timeOutput');
 const currentTemp = document.querySelector('.currentTemp');
-const todayLow = document.querySelector('.todayLow');
-const todayHigh = document.querySelector('.todayHigh');
-const todayDescription = document.querySelector('.todayDescription');
+const realtimeLow = document.querySelector('.realtimeLow');
+const realtimeHigh = document.querySelector('.realtimeHigh');
+const realtimeDescription = document.querySelector('.realtimeDescription');
 const icon = document.querySelector('.icon');
 let units = "imperial";
 let locationSearch = 'Phoenix';
-let todayData = document.querySelector('.todayData');
 
 locationInput.addEventListener('keypress', function (event) {
     if (event.key === 'Enter') {
@@ -81,27 +80,27 @@ async function getWeather(latitude, longitude) {
         //Store values
         currentTemp.innerHTML = Math.round(weatherData.main.temp);
         if (units === 'imperial') {
-            todayLow.innerHTML = "L: " + Math.round(weatherData.main.temp_min) + "°F";
-            todayHigh.innerHTML = "H: " + Math.round(weatherData.main.temp_max) + "°F";
+            realtimeLow.innerHTML = "L: " + Math.round(weatherData.main.temp_min) + "°F";
+            realtimeHigh.innerHTML = "H: " + Math.round(weatherData.main.temp_max) + "°F";
         } else {
-            todayLow.innerHTML = "L: " + Math.round(weatherData.main.temp_min) + "°C";
-            todayHigh.innerHTML = "H: " + Math.round(weatherData.main.temp_max) + "°C";
+            realtimeLow.innerHTML = "L: " + Math.round(weatherData.main.temp_min) + "°C";
+            realtimeHigh.innerHTML = "H: " + Math.round(weatherData.main.temp_max) + "°C";
         }
         
-        todayDescription.innerHTML = weatherData.weather[0].description;
+        realtimeDescription.innerHTML = weatherData.weather[0].description;
 
         //Update icon
-        if (todayDescription.innerHTML.includes('clouds')){
+        if (realtimeDescription.innerHTML.includes('clouds')){
             icon.src = "icons/overcast.png"
-        } else if (todayDescription.innerHTML.includes('thunderstorm')){
+        } else if (realtimeDescription.innerHTML.includes('thunderstorm')){
             icon.src = "icons/thunder.png"
-        } else if (todayDescription.innerHTML.includes('drizzle')){
+        } else if (realtimeDescription.innerHTML.includes('drizzle')){
             icon.src = "icons/sprinkles.png"
-        } else if (todayDescription.innerHTML.includes('rain')){
+        } else if (realtimeDescription.innerHTML.includes('rain')){
             icon.src = "icons/rainy.png"
-        } else if (todayDescription.innerHTML.includes('snow')){
+        } else if (realtimeDescription.innerHTML.includes('snow')){
             icon.src = "icons/snow.png"
-        } else if (todayDescription.innerHTML.includes('clear')){
+        } else if (realtimeDescription.innerHTML.includes('clear')){
             icon.src = "icons/clear-day.png"
         };
   } catch (e){

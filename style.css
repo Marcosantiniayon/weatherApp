@@ -26,14 +26,13 @@ h1{
     font-weight: 500;
     font-size: 6REM;
     margin: 0px;
+    /* SHDOW EFFECT below */
+    /* text-shadow: -5px 5px 10px #515151;
+    color: white; */
 }
 h4{
     font-weight: 500;
     margin: 0;
-}
-.icon{
-    margin: 0;
-    padding: 0px;
 }
 
 .locationInput{
@@ -60,28 +59,29 @@ h4{
     flex-direction: column;
     align-items: center;
 }
-    .todayData {
-        width: 24%;
+    .realtime {
+        width: 15%;
         display: grid;
         grid-auto-flow: column;
         grid-template: 4fr 1fr / 1fr 1fr;
-        align-items: center;
         justify-content: center;
     }
-        .todayTop {
+        .realtimeTop {
             display: flex;
             align-items: center;
             gap: 24px;
         }
-        .todayLowHigh {
+        .realtimeLowHigh {
             display: flex;
             gap: 20px;
         }
         .icon{
             margin: 0;
             padding: 12px;
+            align-self: center;
+            justify-self: center;
         }
-        .todayDescription{
+        .realtimeDescription{
             justify-self: center;
         }
 
