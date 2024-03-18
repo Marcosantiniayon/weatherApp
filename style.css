@@ -101,3 +101,29 @@ h4{
         color: #ffffff;
         background-color: #7b8094;
     }
+
+.hourlyForecast{
+   background-color: #ffffff46;
+   padding: 12px;
+   border-radius: 12px;
+}
+    h3{
+        margin: 4px;
+    }
+    .hourlyForecastData{
+        display: grid;
+        grid-auto-flow: column;
+        gap: 100px;
+        text-align: center;
+    }
+        .timeIcon{
+            width: 35px;
+            display: flex;
+            flex-direction: column;
+        }
+.dailyForecast {
+    margin-top: 24px;
+    background-color: #ffffff46;
+    padding: 12px;
+    border-radius: 12px;
+}
