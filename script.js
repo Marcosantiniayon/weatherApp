@@ -12,6 +12,11 @@ const realtimeDescription = document.querySelector('.realtimeDescription');
 const icon = document.querySelector('.icon');
 let units = "imperial";
 let locationSearch = 'Phoenix';
+let forecastTemp = 0;
+let forecastUTC = 0;
+let localTimezone = 0;
+// let utcTimestamp = 1710968400;
+// let localOffsetSeconds = -25200;
 
 locationInput.addEventListener('keypress', function (event) {
     if (event.key === 'Enter') {
@@ -59,6 +64,7 @@ async function getGeoCode(locationSearch) {
       }
 
       getWeather(latitude, longitude);
+      getHourForecast(latitude, longitude);
 
   } catch (e){
       console.log(e)
@@ -74,8 +80,9 @@ async function getWeather(latitude, longitude) {
       
         //Store the JSON 
         const weatherData = await response.json();
+        console.log(weatherData);
 
-        //Store values
+        //Display values
         currentTemp.innerHTML = Math.round(weatherData.main.temp);
         if (units === 'imperial') {
             realtimeLow.innerHTML = "L: " + Math.round(weatherData.main.temp_min) + "°F";
@@ -101,6 +108,34 @@ async function getWeather(latitude, longitude) {
         } else if (realtimeDescription.innerHTML.includes('clear')){
             icon.src = "icons/clear-day.png"
         };
+  } catch (e){
+    console.log(e)
+  };  
+}
+async function getHourForecast(latitude, longitude) {
+    const url = `https://api.openweathermap.org/data/2.5/forecast?units=${units}&lat=${latitude}&lon=${longitude}&appid=${apiKey}`
+    try {
+        //Make fetch request and stores it as response
+        const response = await fetch(url, { mode: 'cors' });
+      
+        //Store the JSON 
+        const hourlyData = await response.json();
+        console.log(hourlyData);
+
+        //Store city time zone (offset seconds)
+        localTimezone = hourlyData.city.timezone;
+
+        //Pull and convert forecast times to local city time zone
+        hourlyData.list.forEach(index => {
+            forecastTemp = index.main.temp;
+            forecastUTC = index.dt;
+            console.log(convertTime2(forecastUTC, localTimezone) + " : " + forecastTemp +"°");
+        });
+
+        //Display values
+
+        //Update icons
+        
   } catch (e){
     console.log(e)
   };  
@@ -143,3 +178,67 @@ function parseLocation(locationString) {
     return parsedLocation;
 }
 
+function convertTime(forecastUTC, localTimezone) {
+    // Convert forecastUTC to milliseconds
+    const utcMilliseconds = forecastUTC * 1000;
+
+    // Add timezone offset to the timestamp (in milliseconds)
+    const adjustedTimestamp = utcMilliseconds + localTimezone * 1000;
+
+    // Create a new Date object using the adjusted timestamp
+    const adjustedDate = new Date(adjustedTimestamp);
+
+    // Extract the hour from the adjusted date
+    const hourInCityTimeZone = adjustedDate.getHours();
+
+    return hourInCityTimeZone;
+}
+
+function convertTime2(forecastUTC, localTimezone) {
+    
+    // Convert Unix timestamp to milliseconds
+    const utcMilliseconds = forecastUTC * 1000;
+
+    // Create a new Date object with the Unix timestamp
+    const date = new Date(utcMilliseconds);
+
+    // Adjust the time based on the time zone offset
+    const adjustedDate = new Date(date.getTime() + localTimezone * 1000);
+
+    // Format the adjusted date and time
+    // const formattedDate = adjustedDate.toISOString(); // Output in ISO 8601 format
+    
+
+    // Format the adjusted date and time
+    const formattedDate = adjustedDate.toISOString().split('T')[0]; // Extract date in YYYY-MM-DD format
+    const formattedTime = adjustedDate.toLocaleTimeString('en-US', { hour12: true , timeZone: 'UTC' }); // Format time in 12-hour format with AM/PM
+    
+    // return formattedDate; // Output: "2024-03-20T14:00:00.000Z" (UTC-7 time zone)
+
+    return `${formattedDate} ${formattedTime} `; // Combine date and time
+
+}
+
+function convertTime3(forecastUTC, localTimezone) {
+    let localTime = forecastUTC + localTimezone;
+    
+    const date = new Date(localTime * 1000);
+
+    // Extract date components
+    const month = date.toLocaleString('en-us', { month: 'long' });
+    const day = date.getDate();
+    const year = date.getFullYear();
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+
+    // Determine AM or PM
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+
+    // Adjust hours to 12-hour format
+    const formattedHours = hours % 12 || 12;
+
+    // Construct the formatted date string
+    const formattedDate = `${month} ${day}, ${year}, ${formattedHours}:${minutes} ${ampm}`;
+
+    return formattedDate;
+}
