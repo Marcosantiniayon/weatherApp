@@ -18,6 +18,10 @@ let localTimezone = 0;
 // let utcTimestamp = 1710968400;
 // let localOffsetSeconds = -25200;
 
+window.onload = function(){
+    getGeoCode(locationSearch);
+}
+
 locationInput.addEventListener('keypress', function (event) {
     if (event.key === 'Enter') {
         event.preventDefault(); 
@@ -140,8 +144,6 @@ async function getHourForecast(latitude, longitude) {
     console.log(e)
   };  
 }
-
-getGeoCode(locationSearch);
 
 function parseLocation(locationString) {
     const parts = locationString.split(',');
