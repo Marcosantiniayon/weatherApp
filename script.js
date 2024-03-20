@@ -129,7 +129,7 @@ async function getHourForecast(latitude, longitude) {
         hourlyData.list.forEach(index => {
             forecastTemp = index.main.temp;
             forecastUTC = index.dt;
-            console.log(convertTime2(forecastUTC, localTimezone) + " : " + forecastTemp +"°");
+            console.log(convertTime(forecastUTC, localTimezone) + " : " + forecastTemp +"°");
         });
 
         //Display values
@@ -179,22 +179,6 @@ function parseLocation(locationString) {
 }
 
 function convertTime(forecastUTC, localTimezone) {
-    // Convert forecastUTC to milliseconds
-    const utcMilliseconds = forecastUTC * 1000;
-
-    // Add timezone offset to the timestamp (in milliseconds)
-    const adjustedTimestamp = utcMilliseconds + localTimezone * 1000;
-
-    // Create a new Date object using the adjusted timestamp
-    const adjustedDate = new Date(adjustedTimestamp);
-
-    // Extract the hour from the adjusted date
-    const hourInCityTimeZone = adjustedDate.getHours();
-
-    return hourInCityTimeZone;
-}
-
-function convertTime2(forecastUTC, localTimezone) {
     
     // Convert Unix timestamp to milliseconds
     const utcMilliseconds = forecastUTC * 1000;
@@ -206,39 +190,11 @@ function convertTime2(forecastUTC, localTimezone) {
     const adjustedDate = new Date(date.getTime() + localTimezone * 1000);
 
     // Format the adjusted date and time
-    // const formattedDate = adjustedDate.toISOString(); // Output in ISO 8601 format
-    
-
-    // Format the adjusted date and time
     const formattedDate = adjustedDate.toISOString().split('T')[0]; // Extract date in YYYY-MM-DD format
-    const formattedTime = adjustedDate.toLocaleTimeString('en-US', { hour12: true , timeZone: 'UTC' }); // Format time in 12-hour format with AM/PM
+    const formattedTime = adjustedDate.toLocaleTimeString('en-US', { hour12: true, timeZone: 'UTC' }); // Format time in 12-hour format with AM/PM
+    console.log(formattedDate);
     
-    // return formattedDate; // Output: "2024-03-20T14:00:00.000Z" (UTC-7 time zone)
-
-    return `${formattedDate} ${formattedTime} `; // Combine date and time
+    return formattedTime; // Combine date and time
 
 }
 
-function convertTime3(forecastUTC, localTimezone) {
-    let localTime = forecastUTC + localTimezone;
-    
-    const date = new Date(localTime * 1000);
-
-    // Extract date components
-    const month = date.toLocaleString('en-us', { month: 'long' });
-    const day = date.getDate();
-    const year = date.getFullYear();
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-
-    // Determine AM or PM
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-
-    // Adjust hours to 12-hour format
-    const formattedHours = hours % 12 || 12;
-
-    // Construct the formatted date string
-    const formattedDate = `${month} ${day}, ${year}, ${formattedHours}:${minutes} ${ampm}`;
-
-    return formattedDate;
-}
