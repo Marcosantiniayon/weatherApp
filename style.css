@@ -122,11 +122,12 @@ h4{
         overflow-x: auto;
         white-space: nowrap;
     }
-        /* .hour{
-            padding-left: 12px;
-            padding-right: 12px;
-        } */
-            .timeIcon{
+        .hourDiv{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+            .hourIcon{
                 width: 35px;
                 display: flex;
                 flex-direction: column;

@@ -1,6 +1,5 @@
 const apiKey = "b08904ed3132c3c9a46ef2abcacb62d6";
 
-
 const unitBtn = document.querySelector('.unitBtn');
 const locationInput = document.querySelector('.locationInput');
 const locationOutput = document.querySelector('.locationOutput');
@@ -10,13 +9,17 @@ const realtimeLow = document.querySelector('.realtimeLow');
 const realtimeHigh = document.querySelector('.realtimeHigh');
 const realtimeDescription = document.querySelector('.realtimeDescription');
 const icon = document.querySelector('.icon');
+const hourlyForecastData = document.querySelector('.hourlyForecastData');
+
 let units = "imperial";
 let locationSearch = 'Phoenix';
 let forecastTemp = 0;
 let forecastUTC = 0;
 let localTimezone = 0;
-// let utcTimestamp = 1710968400;
-// let localOffsetSeconds = -25200;
+let formattedDate = '';
+let formattedTime = '';
+
+const todayDate = getTodaysDate();
 
 window.onload = function(){
     getGeoCode(locationSearch);
@@ -133,7 +136,31 @@ async function getHourForecast(latitude, longitude) {
         hourlyData.list.forEach(index => {
             forecastTemp = index.main.temp;
             forecastUTC = index.dt;
-            console.log(convertTime(forecastUTC, localTimezone) + " : " + forecastTemp +"°");
+            convertTime(forecastUTC, localTimezone);
+
+            if (formattedDate === todayDate ) {
+                console.log(formattedDate + ", " + formattedTime + " : " + forecastTemp + "°")
+
+                const hourDiv = document.createElement('div');
+                hourDiv.className = 'hourDiv';
+                hourlyForecastData.appendChild(hourDiv);
+
+                const hourTime = document.createElement('p');
+                hourTime.innerHTML = formattedTime;
+                hourTime.className = 'hourTime';
+                hourDiv.appendChild(hourTime);
+
+                const hourIcon = document.createElement('img');
+                hourIcon.src = 'icons/cloudy-sun.png';
+                hourIcon.className = 'hourIcon';
+                hourDiv.appendChild(hourIcon);
+
+                const hourTemp = document.createElement('p');
+                hourTemp.innerHTML = forecastTemp + "F°";
+                hourTemp.className = 'hourTemp';
+                hourDiv.appendChild(hourTemp);
+
+            }
         });
 
         //Display values
@@ -179,7 +206,6 @@ function parseLocation(locationString) {
     }
     return parsedLocation;
 }
-
 function convertTime(forecastUTC, localTimezone) {
     
     // Convert Unix timestamp to milliseconds
@@ -191,12 +217,15 @@ function convertTime(forecastUTC, localTimezone) {
     // Adjust the time based on the time zone offset
     const adjustedDate = new Date(date.getTime() + localTimezone * 1000);
 
-    // Format the adjusted date and time
-    const formattedDate = adjustedDate.toISOString().split('T')[0]; // Extract date in YYYY-MM-DD format
-    const formattedTime = adjustedDate.toLocaleTimeString('en-US', { hour12: true, timeZone: 'UTC' }); // Format time in 12-hour format with AM/PM
-    console.log(formattedDate);
-    
-    return formattedTime; // Combine date and time
-
+    // Format the adjusted date and time and assign them to formattedDate & formattedTime
+    formattedDate = adjustedDate.toISOString().split('T')[0]; // Extract date in YYYY-MM-DD format
+    formattedTime = adjustedDate.toLocaleTimeString('en-US', { hour12: true, timeZone: 'UTC' }); // Format time in 12-hour format with AM/PM
 }
-
+function getTodaysDate() {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Add leading zero if needed
+    const day = String(today.getDate()).padStart(2, '0'); // Add leading zero if needed
+    const todayDate = `${year}-${month}-${day}`;
+    return todayDate;
+}
