@@ -12,6 +12,7 @@ const icon = document.querySelector('.icon');
 const hourlyForecastData = document.querySelector('.hourlyForecastData');
 
 let units = "imperial";
+let unitSign = "F°"
 let locationSearch = 'Phoenix';
 let forecastTemp = 0;
 let forecastUTC = 0;
@@ -36,16 +37,17 @@ unitBtn.addEventListener('click', function () {
     if (units === "imperial") {
         unitBtn.classList.remove('imperial');
         unitBtn.classList.add('metric');
-        unitBtn.innerHTML = "°C"
         units = "metric";
+        unitSign = "C°"
         getGeoCode(locationSearch);
     } else {
         unitBtn.classList.remove('metric');
         unitBtn.classList.add('imperial');
-        unitBtn.innerHTML = "°F"
         units = "imperial";
+        unitSign = "F°"
         getGeoCode(locationSearch);
     }
+    unitBtn.innerHTML = unitSign;
 });
 
 async function getGeoCode(locationSearch) {
@@ -132,35 +134,15 @@ async function getHourForecast(latitude, longitude) {
         //Store city time zone (offset seconds)
         localTimezone = hourlyData.city.timezone;
 
+        // Clear Old Data
+        clearForecasts();
+
         //Pull and convert forecast times to local city time zone
         hourlyData.list.forEach(index => {
-            forecastTemp = index.main.temp;
+            forecastTemp = Math.round(index.main.temp) + unitSign;
             forecastUTC = index.dt;
             convertTime(forecastUTC, localTimezone);
-
-            if (formattedDate === todayDate ) {
-                console.log(formattedDate + ", " + formattedTime + " : " + forecastTemp + "°")
-
-                const hourDiv = document.createElement('div');
-                hourDiv.className = 'hourDiv';
-                hourlyForecastData.appendChild(hourDiv);
-
-                const hourTime = document.createElement('p');
-                hourTime.innerHTML = formattedTime;
-                hourTime.className = 'hourTime';
-                hourDiv.appendChild(hourTime);
-
-                const hourIcon = document.createElement('img');
-                hourIcon.src = 'icons/cloudy-sun.png';
-                hourIcon.className = 'hourIcon';
-                hourDiv.appendChild(hourIcon);
-
-                const hourTemp = document.createElement('p');
-                hourTemp.innerHTML = forecastTemp + "F°";
-                hourTemp.className = 'hourTemp';
-                hourDiv.appendChild(hourTemp);
-
-            }
+            displayForecast();
         });
 
         //Display values
@@ -219,7 +201,9 @@ function convertTime(forecastUTC, localTimezone) {
 
     // Format the adjusted date and time and assign them to formattedDate & formattedTime
     formattedDate = adjustedDate.toISOString().split('T')[0]; // Extract date in YYYY-MM-DD format
-    formattedTime = adjustedDate.toLocaleTimeString('en-US', { hour12: true, timeZone: 'UTC' }); // Format time in 12-hour format with AM/PM
+    const rawFormattedTime = adjustedDate.toLocaleTimeString('en-US', { hour12: true, timeZone: 'UTC' }); // Format time in 12-hour format with AM/PM
+    formattedTime = rawFormattedTime.replace(/:\d{2}\s/, ''); //Removes the seconds
+
 }
 function getTodaysDate() {
     const today = new Date();
@@ -228,4 +212,37 @@ function getTodaysDate() {
     const day = String(today.getDate()).padStart(2, '0'); // Add leading zero if needed
     const todayDate = `${year}-${month}-${day}`;
     return todayDate;
+}
+function displayForecast() {    
+    //Hourly ForecastData
+    if (formattedDate === todayDate) {
+        console.log(formattedDate + ", " + formattedTime + " : " + forecastTemp + "°");
+
+        const hourDiv = document.createElement('div');
+        hourDiv.className = 'hourDiv';
+        hourlyForecastData.appendChild(hourDiv);
+
+        const hourTime = document.createElement('p');
+        hourTime.innerHTML = formattedTime;
+        hourTime.className = 'hourTime';
+        hourDiv.appendChild(hourTime);
+
+        const hourIcon = document.createElement('img');
+        hourIcon.src = 'icons/cloudy-sun.png';
+        hourIcon.className = 'hourIcon';
+        hourDiv.appendChild(hourIcon);
+
+        const hourTemp = document.createElement('p');
+        hourTemp.innerHTML = forecastTemp;
+        hourTemp.className = 'hourTemp';
+        hourDiv.appendChild(hourTemp);
+        console.log('added');
+    }
+}
+function clearForecasts() {
+    //Hourly ForecastData
+    while (hourlyForecastData.firstChild) {
+        hourlyForecastData.removeChild(hourlyForecastData.firstChild);
+        console.log('cleared');
+    }
 }
