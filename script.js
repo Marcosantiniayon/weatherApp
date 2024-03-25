@@ -17,6 +17,8 @@ let locationSearch = 'Phoenix';
 let forecastTemp = 0;
 let forecastUTC = 0;
 let localTimezone = 0;
+let localFormattedDate = '';
+let localFormattedTime = '';
 let formattedDate = '';
 let dayName = '';
 let dayOfWeek = '';
@@ -191,61 +193,48 @@ function parseLocation(locationString) {
     return parsedLocation;
 }
 function convertTime(forecastUTC, localTimezone) {
-    // Convert the UTC timestamp to a Date object
-    const utcDate = new Date(forecastUTC * 1000);
-
-    // Format the UTC date and time
-    const utcFormattedDate = utcDate.toISOString().split('T')[0]; // Gets the date in YYYY-MM-DD format
-    const utcFormattedTime = utcDate.toISOString().split('T')[1].split(':').slice(0, 2).join(':'); // Gets the time in HH:MM format
-
     // Adjust the timestamp by the timezone offset to get the local time
     const localTimestamp = forecastUTC + localTimezone;
     const localDate = new Date(localTimestamp * 1000);
 
     // Format the local date and time
-    const localFormattedDate = localDate.toISOString().split('T')[0]; // Gets the date in YYYY-MM-DD format
-    const localFormattedTime = ('0' + localDate.getUTCHours()).slice(-2) + ':' + ('0' + localDate.getUTCMinutes()).slice(-2); // Ensures HH:MM format
+    localFormattedDate = localDate.toISOString().split('T')[0]; // Gets the date in YYYY-MM-DD format
+    localFormattedTime = formatTime(localDate);
 
-    dayOfWeek = localDate.getDay();
-    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    dayName = daysOfWeek[dayOfWeek];
+    // Get day of the week
+    dayName = getDay(localDate);
 
     // console.log(`UTC Date and Time: ${utcFormattedDate} ${utcFormattedTime}`);
     console.log(`${dayName},  ${localFormattedDate} ${localFormattedTime}`);
 }
-function getTodaysDate() {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0'); // Add leading zero if needed
-    const day = String(today.getDate()).padStart(2, '0'); // Add leading zero if needed
-    const todayDate = `${year}-${month}-${day}`;
-    return todayDate;
-}
 function displayForecast() {    
     //Hourly ForecastData
-    // if (formattedDate === todayDate) {
-    //     console.log(formattedDate + ", " + formattedTime + " : " + forecastTemp + "°");
+    console.log(formattedDate + ", " + formattedTime + " : " + forecastTemp + "°");
 
-    //     const hourDiv = document.createElement('div');
-    //     hourDiv.className = 'hourDiv';
-    //     hourlyForecastData.appendChild(hourDiv);
+    const hourDiv = document.createElement('div');
+    hourDiv.className = 'hourDiv';
+    hourlyForecastData.appendChild(hourDiv);
 
-    //     const hourTime = document.createElement('p');
-    //     hourTime.innerHTML = formattedTime;
-    //     hourTime.className = 'hourTime';
-    //     hourDiv.appendChild(hourTime);
+    const hourDay = document.createElement('p');
+    hourDay.innerHTML = `${dayName}`;
+    hourDay.className = 'hourDay';
+    hourDiv.appendChild(hourDay);
 
-    //     const hourIcon = document.createElement('img');
-    //     hourIcon.src = 'icons/cloudy-sun.png';
-    //     hourIcon.className = 'hourIcon';
-    //     hourDiv.appendChild(hourIcon);
+    const hourTime = document.createElement('p');
+    hourTime.innerHTML = `${localFormattedTime}`;
+    hourTime.className = 'hourTime';
+    hourDiv.appendChild(hourTime);
 
-    //     const hourTemp = document.createElement('p');
-    //     hourTemp.innerHTML = forecastTemp;
-    //     hourTemp.className = 'hourTemp';
-    //     hourDiv.appendChild(hourTemp);
-    //     console.log('added');
-    // }
+    const hourIcon = document.createElement('img');
+    hourIcon.src = 'icons/cloudy-sun.png';
+    hourIcon.className = 'hourIcon';
+    hourDiv.appendChild(hourIcon);
+
+    const hourTemp = document.createElement('p');
+    hourTemp.innerHTML = forecastTemp;
+    hourTemp.className = 'hourTemp';
+    hourDiv.appendChild(hourTemp);
+    console.log('added');
     // console.log(dayOfWeek + ": " + formattedDate + ", " + formattedTime + " : " + forecastTemp);
 }
 function clearForecasts() {
@@ -254,4 +243,36 @@ function clearForecasts() {
         hourlyForecastData.removeChild(hourlyForecastData.firstChild);
         console.log('cleared');
     }
+}
+
+// Helper Functions
+function getTodaysDate() {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Add leading zero if needed
+    const day = String(today.getDate()).padStart(2, '0'); // Add leading zero if needed
+    const todayDate = `${year}-${month}-${day}`;
+    return todayDate;
+}
+function getDay(localDate) {
+    dayOfWeek = localDate.getUTCDay();
+    const daysOfWeek = ['Sun', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat'];
+    dayName = daysOfWeek[dayOfWeek];
+
+    return dayName;
+}
+function formatTime(localDate) {
+    // Calculate AM or PM
+    let hours = localDate.getUTCHours();
+    const minutes = ('0' + localDate.getUTCMinutes()).slice(-2);
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+
+    // Convert to 12-hour format
+    hours = hours % 12;
+    hours = hours ? hours : 12; // Convert 0 to 12 for midnight
+
+    // Format the local time with AM or PM
+    const localFormattedTime = ('0' + hours).slice(-2) + ':' + minutes + ' ' + ampm;
+
+    return localFormattedTime;
 }

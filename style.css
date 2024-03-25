@@ -117,7 +117,7 @@ h4{
     .hourlyForecastData{
         display: grid;
         grid-auto-flow: column;
-        gap: 100px;
+        gap: 75px;
         text-align: center;
         overflow-x: auto;
         white-space: nowrap;
@@ -127,6 +127,14 @@ h4{
             flex-direction: column;
             align-items: center;
         }
+        .hourDiv > *{
+            margin: 4px;
+            font-size: .85rem;
+        }
+            .hourDay {
+                /* font-size: smaller; */
+                margin-bottom: 0px;
+            }
             .hourIcon{
                 width: 35px;
                 display: flex;
