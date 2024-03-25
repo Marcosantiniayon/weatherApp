@@ -142,7 +142,7 @@ async function getHourForecast(latitude, longitude) {
         clearForecasts();
 
         //Pull and convert forecast times to local city time zone
-        for (let i = 0; i < 8; i++) {
+        for (let i = 0; i < 17; i++) {
             const index = hourlyData.list[i];
             forecastTemp = Math.round(index.main.temp) + unitSign;
             forecastUTC = index.dt;
