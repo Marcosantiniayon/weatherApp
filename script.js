@@ -18,6 +18,8 @@ let forecastTemp = 0;
 let forecastUTC = 0;
 let localTimezone = 0;
 let formattedDate = '';
+let dayName = '';
+let dayOfWeek = '';
 let formattedTime = '';
 
 const todayDate = getTodaysDate();
@@ -138,13 +140,13 @@ async function getHourForecast(latitude, longitude) {
         clearForecasts();
 
         //Pull and convert forecast times to local city time zone
-        hourlyData.list.forEach(index => {
+        for (let i = 0; i < 8; i++) {
+            const index = hourlyData.list[i];
             forecastTemp = Math.round(index.main.temp) + unitSign;
             forecastUTC = index.dt;
             convertTime(forecastUTC, localTimezone);
             displayForecast();
-        });
-
+        }       
         //Display values
 
         //Update icons
@@ -189,21 +191,27 @@ function parseLocation(locationString) {
     return parsedLocation;
 }
 function convertTime(forecastUTC, localTimezone) {
-    
-    // Convert Unix timestamp to milliseconds
-    const utcMilliseconds = forecastUTC * 1000;
+    // Convert the UTC timestamp to a Date object
+    const utcDate = new Date(forecastUTC * 1000);
 
-    // Create a new Date object with the Unix timestamp
-    const date = new Date(utcMilliseconds);
+    // Format the UTC date and time
+    const utcFormattedDate = utcDate.toISOString().split('T')[0]; // Gets the date in YYYY-MM-DD format
+    const utcFormattedTime = utcDate.toISOString().split('T')[1].split(':').slice(0, 2).join(':'); // Gets the time in HH:MM format
 
-    // Adjust the time based on the time zone offset
-    const adjustedDate = new Date(date.getTime() + localTimezone * 1000);
+    // Adjust the timestamp by the timezone offset to get the local time
+    const localTimestamp = forecastUTC + localTimezone;
+    const localDate = new Date(localTimestamp * 1000);
 
-    // Format the adjusted date and time and assign them to formattedDate & formattedTime
-    formattedDate = adjustedDate.toISOString().split('T')[0]; // Extract date in YYYY-MM-DD format
-    const rawFormattedTime = adjustedDate.toLocaleTimeString('en-US', { hour12: true, timeZone: 'UTC' }); // Format time in 12-hour format with AM/PM
-    formattedTime = rawFormattedTime.replace(/:\d{2}\s/, ''); //Removes the seconds
+    // Format the local date and time
+    const localFormattedDate = localDate.toISOString().split('T')[0]; // Gets the date in YYYY-MM-DD format
+    const localFormattedTime = ('0' + localDate.getUTCHours()).slice(-2) + ':' + ('0' + localDate.getUTCMinutes()).slice(-2); // Ensures HH:MM format
 
+    dayOfWeek = localDate.getDay();
+    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    dayName = daysOfWeek[dayOfWeek];
+
+    // console.log(`UTC Date and Time: ${utcFormattedDate} ${utcFormattedTime}`);
+    console.log(`${dayName},  ${localFormattedDate} ${localFormattedTime}`);
 }
 function getTodaysDate() {
     const today = new Date();
@@ -215,29 +223,30 @@ function getTodaysDate() {
 }
 function displayForecast() {    
     //Hourly ForecastData
-    if (formattedDate === todayDate) {
-        console.log(formattedDate + ", " + formattedTime + " : " + forecastTemp + "°");
+    // if (formattedDate === todayDate) {
+    //     console.log(formattedDate + ", " + formattedTime + " : " + forecastTemp + "°");
 
-        const hourDiv = document.createElement('div');
-        hourDiv.className = 'hourDiv';
-        hourlyForecastData.appendChild(hourDiv);
+    //     const hourDiv = document.createElement('div');
+    //     hourDiv.className = 'hourDiv';
+    //     hourlyForecastData.appendChild(hourDiv);
 
-        const hourTime = document.createElement('p');
-        hourTime.innerHTML = formattedTime;
-        hourTime.className = 'hourTime';
-        hourDiv.appendChild(hourTime);
+    //     const hourTime = document.createElement('p');
+    //     hourTime.innerHTML = formattedTime;
+    //     hourTime.className = 'hourTime';
+    //     hourDiv.appendChild(hourTime);
 
-        const hourIcon = document.createElement('img');
-        hourIcon.src = 'icons/cloudy-sun.png';
-        hourIcon.className = 'hourIcon';
-        hourDiv.appendChild(hourIcon);
+    //     const hourIcon = document.createElement('img');
+    //     hourIcon.src = 'icons/cloudy-sun.png';
+    //     hourIcon.className = 'hourIcon';
+    //     hourDiv.appendChild(hourIcon);
 
-        const hourTemp = document.createElement('p');
-        hourTemp.innerHTML = forecastTemp;
-        hourTemp.className = 'hourTemp';
-        hourDiv.appendChild(hourTemp);
-        console.log('added');
-    }
+    //     const hourTemp = document.createElement('p');
+    //     hourTemp.innerHTML = forecastTemp;
+    //     hourTemp.className = 'hourTemp';
+    //     hourDiv.appendChild(hourTemp);
+    //     console.log('added');
+    // }
+    // console.log(dayOfWeek + ": " + formattedDate + ", " + formattedTime + " : " + forecastTemp);
 }
 function clearForecasts() {
     //Hourly ForecastData
