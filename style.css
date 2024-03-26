@@ -117,7 +117,7 @@ h4{
     .hourlyForecastData{
         display: grid;
         grid-auto-flow: column;
-        gap: 75px;
+        gap: 68px;
         text-align: center;
         overflow-x: auto;
         white-space: nowrap;

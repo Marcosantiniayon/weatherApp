@@ -14,7 +14,7 @@ const hourlyForecastData = document.querySelector('.hourlyForecastData');
 let units = "imperial";
 let unitSign = "F°"
 let locationSearch = 'Phoenix';
-let forecastTemp = 0;
+let hourlyTemp = 0;
 let forecastUTC = 0;
 let localTimezone = 0;
 let localFormattedDate = '';
@@ -22,7 +22,28 @@ let localFormattedTime = '';
 let formattedDate = '';
 let dayName = '';
 let dayOfWeek = '';
+let currentDay = '';
 let formattedTime = '';
+let averageTemp = 0;
+let temperaturesByDay = {
+    'Sun': [],
+    'Mon': [],
+    'Tues': [],
+    'Wed': [],
+    'Thur': [],
+    'Fri': [],
+    'Sat': []
+};
+let averageTemps = {
+    'Sun': [],
+    'Mon': [],
+    'Tues': [],
+    'Wed': [],
+    'Thur': [],
+    'Fri': [],
+    'Sat': []
+}
+
 
 const todayDate = getTodaysDate();
 
@@ -77,7 +98,7 @@ async function getGeoCode(locationSearch) {
       }
 
       getWeather(latitude, longitude);
-      getHourForecast(latitude, longitude);
+      getForecast(latitude, longitude);
 
   } catch (e){
       console.log(e)
@@ -125,30 +146,36 @@ async function getWeather(latitude, longitude) {
     console.log(e)
   };  
 }
-async function getHourForecast(latitude, longitude) {
+async function getForecast(latitude, longitude) {
     const url = `https://api.openweathermap.org/data/2.5/forecast?units=${units}&lat=${latitude}&lon=${longitude}&appid=${apiKey}`
     try {
         //Make fetch request and stores it as response
         const response = await fetch(url, { mode: 'cors' });
       
         //Store the JSON 
-        const hourlyData = await response.json();
-        console.log(hourlyData);
+        const forecastData = await response.json();
+        console.log(forecastData);
 
         //Store city time zone (offset seconds)
-        localTimezone = hourlyData.city.timezone;
+        localTimezone = forecastData.city.timezone;
 
         // Clear Old Data
         clearForecasts();
 
-        //Pull and convert forecast times to local city time zone
-        for (let i = 0; i < 17; i++) {
-            const index = hourlyData.list[i];
-            forecastTemp = Math.round(index.main.temp) + unitSign;
+        // Get Hourly Forecast Data 
+        forecastData.list.forEach(index => {
+            hourlyTemp = Math.round(index.main.temp) + unitSign;
             forecastUTC = index.dt;
             convertTime(forecastUTC, localTimezone);
-            displayForecast();
-        }       
+            displayHourlyForecast();
+            dayTemps(hourlyTemp, dayName);
+        });
+        
+        convertTime(forecastData.list[0].dt, localTimezone);
+
+        getDailyForecast();
+        // console.log(temperaturesByDay);
+
         //Display values
 
         //Update icons
@@ -204,13 +231,17 @@ function convertTime(forecastUTC, localTimezone) {
     // Get day of the week
     dayName = getDay(localDate);
 
-    // console.log(`UTC Date and Time: ${utcFormattedDate} ${utcFormattedTime}`);
-    console.log(`${dayName},  ${localFormattedDate} ${localFormattedTime}`);
 }
-function displayForecast() {    
+function dayTemps(hourlyTemp, dayName) {
+    // Convert hourlyTemp from string to number and remove the unit
+    const tempValue = parseFloat(hourlyTemp);
+    // Store the temperature value in the corresponding day array
+    if (!isNaN(tempValue)) {
+        temperaturesByDay[dayName].push(tempValue);
+    }
+}
+function displayHourlyForecast() {    
     //Hourly ForecastData
-    console.log(formattedDate + ", " + formattedTime + " : " + forecastTemp + "°");
-
     const hourDiv = document.createElement('div');
     hourDiv.className = 'hourDiv';
     hourlyForecastData.appendChild(hourDiv);
@@ -231,17 +262,40 @@ function displayForecast() {
     hourDiv.appendChild(hourIcon);
 
     const hourTemp = document.createElement('p');
-    hourTemp.innerHTML = forecastTemp;
+    hourTemp.innerHTML = hourlyTemp;
     hourTemp.className = 'hourTemp';
     hourDiv.appendChild(hourTemp);
-    console.log('added');
-    // console.log(dayOfWeek + ": " + formattedDate + ", " + formattedTime + " : " + forecastTemp);
+}
+function getDailyForecast() {
+    calculateAverages();
+
+    // Clear existing forecasts to prevent duplication
+    clearForecasts();
+
+    
+    // Input days in order of week starting with the day after the current day
+    const orderedDays = [];
+    currentDay = dayOfWeek;
+    for (let i = 0; i <= 6; i++) {
+        const dayOfWeek = (currentDay + i) % 7;
+        const dayName = ['Sun', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat'][dayOfWeek];
+        if (averageTemps[dayName] !== null) {
+            orderedDays.push(dayName);
+        }
+    }
+
+    // Display average day temps in order of orderedDays array
+    orderedDays.forEach(day => {
+        displayDailyForecast(day, averageTemps[day]);
+    });
+}
+function displayDailyForecast(day, temp) {
+    console.log(day, temp);
 }
 function clearForecasts() {
     //Hourly ForecastData
     while (hourlyForecastData.firstChild) {
         hourlyForecastData.removeChild(hourlyForecastData.firstChild);
-        console.log('cleared');
     }
 }
 
@@ -275,4 +329,22 @@ function formatTime(localDate) {
     const localFormattedTime = ('0' + hours).slice(-2) + ':' + minutes + ' ' + ampm;
 
     return localFormattedTime;
+}
+function calculateAverages() {
+    // Loop through temperaturesByDay assigning both the day and temperature
+    for (const [day, temps] of Object.entries(temperaturesByDay)) {
+
+        //Calculate Average Temp (only for days with temperature data)
+        if (temps.length > 0) { 
+            let sum = 0;
+            for (let i = 0; i < temps.length; i++) {
+                sum += temps[i];
+            }
+            averageTemp = sum / temps.length
+            averageTemps[day] = averageTemp.toFixed(1);
+        }else {
+            averageTemps[day] = null; // Indicate no data for this day
+        }
+    }
+
 }
