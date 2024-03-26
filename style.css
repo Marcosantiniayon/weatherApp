@@ -135,14 +135,22 @@ h4{
                 /* font-size: smaller; */
                 margin-bottom: 0px;
             }
-            .hourIcon{
+            .hourIcon, .dayIcon{
                 width: 35px;
                 display: flex;
                 flex-direction: column;
             }
 .dailyForecast {
+    display: flex;
+    flex-direction: column;
     margin-top: 24px;
     background-color: #ffffff46;
     padding: 12px;
     border-radius: 12px;
 }
+    .dailyForecastData{
+
+    }
+        .dayDaiv{
+            display: flex;
+        }

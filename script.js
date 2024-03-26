@@ -10,6 +10,8 @@ const realtimeHigh = document.querySelector('.realtimeHigh');
 const realtimeDescription = document.querySelector('.realtimeDescription');
 const icon = document.querySelector('.icon');
 const hourlyForecastData = document.querySelector('.hourlyForecastData');
+const dailyForecastData = document.querySelector('.dailyForecastData');
+
 
 let units = "imperial";
 let unitSign = "F°"
@@ -173,7 +175,7 @@ async function getForecast(latitude, longitude) {
         
         convertTime(forecastData.list[0].dt, localTimezone);
 
-        getDailyForecast();
+        displayDailyForecast();
         // console.log(temperaturesByDay);
 
         //Display values
@@ -241,7 +243,6 @@ function dayTemps(hourlyTemp, dayName) {
     }
 }
 function displayHourlyForecast() {    
-    //Hourly ForecastData
     const hourDiv = document.createElement('div');
     hourDiv.className = 'hourDiv';
     hourlyForecastData.appendChild(hourDiv);
@@ -266,12 +267,8 @@ function displayHourlyForecast() {
     hourTemp.className = 'hourTemp';
     hourDiv.appendChild(hourTemp);
 }
-function getDailyForecast() {
+function displayDailyForecast() {
     calculateAverages();
-
-    // Clear existing forecasts to prevent duplication
-    clearForecasts();
-
     
     // Input days in order of week starting with the day after the current day
     const orderedDays = [];
@@ -284,18 +281,38 @@ function getDailyForecast() {
         }
     }
 
-    // Display average day temps in order of orderedDays array
+    // Display day temps in specified order
     orderedDays.forEach(day => {
-        displayDailyForecast(day, averageTemps[day]);
+        console.log(day, averageTemps[day]);
+    
+        const dayDiv = document.createElement('div');
+        dayDiv.className = 'dayDiv';
+        dailyForecastData.appendChild(dayDiv);
+
+        const dayDay = document.createElement('p');
+        dayDay.innerHTML = `${day}`;
+        dayDay.className = 'dayDay';
+        dayDiv.appendChild(dayDay);
+
+        const dayIcon = document.createElement('img');
+        dayIcon.src = 'icons/cloudy-sun.png';
+        dayIcon.className = 'dayIcon';
+        dayDiv.appendChild(dayIcon);
+
+        const dayTemp = document.createElement('p');
+        dayTemp.innerHTML = averageTemps[day];
+        dayTemp.className = 'dayTemp';
+        dayDiv.appendChild(dayTemp);
     });
 }
-function displayDailyForecast(day, temp) {
-    console.log(day, temp);
-}
+
 function clearForecasts() {
     //Hourly ForecastData
     while (hourlyForecastData.firstChild) {
         hourlyForecastData.removeChild(hourlyForecastData.firstChild);
+    }
+    while (dailyForecastData.firstChild) {
+        dailyForecastData.removeChild(dailyForecastData.firstChild);
     }
 }
 
