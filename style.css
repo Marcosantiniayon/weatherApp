@@ -102,8 +102,8 @@ h4{
         background-color: #7b8094;
     }
 
-.hourlyForecast{
-    width: 70%;
+.hourlyForecast, .dailyForecast{
+    width: 50%;
     background-color: #ffffff46;
     padding: 18px;
     border-radius: 12px;
@@ -151,6 +151,8 @@ h4{
     .dailyForecastData{
 
     }
-        .dayDaiv{
+        .dayDiv{
             display: flex;
+            align-items: center;
+            justify-content: space-around;
         }
