@@ -9,8 +9,8 @@ body {
     padding: 0;
     display: flex;
     flex-direction: column;
-    color: #7b8094;
-    background-color: #b8bbcc;
+    color: #ffffff;
+    background-color: #7caec3;
     font-family: "Libre Franklin", sans-serif;
 }
 
@@ -18,8 +18,19 @@ footer {
     padding: 5px;
     bottom: 0;
     flex-shrink: 0;
-    background-color:#9a9fb6;
+    background-color:#ffffff3b;
     text-align: center;
+    font-size: small;
+    color: #c1c6de;
+}
+a:visited{
+    color: #f3ffc8;
+}
+#githubIcon{
+    width: 3%;
+}
+span{
+    font-size: small;
 }
 
 h1{
@@ -98,18 +109,18 @@ form{
     cursor: pointer;
 }
     .metric{
-        border: 2px solid #7b8094;
-        color: #7b8094;
+        border: 2px solid #5a94ad;
+        color: #5a94ad;
     }
     .imperial {
         border: 2px solid #ffffff;
         color: #ffffff;
-        background-color: #7b8094;
+        background-color: #5a94ad;
     }
 
 .hourlyForecast, .dailyForecast{
     width: 810px;
-    background-color: #ffffff46;
+    background-color: #ffffff3b;
     padding: 18px;
     border-radius: 12px;
 }
@@ -149,7 +160,7 @@ form{
     display: flex;
     flex-direction: column;
     margin-top: 24px;
-    background-color: #ffffff46;
+    background-color: #ffffff3b;
     padding: 12px;
     border-radius: 12px;
 }
