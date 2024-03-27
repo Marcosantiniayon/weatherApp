@@ -52,6 +52,11 @@ h4{
     flex-direction: column;
     align-items: center;
 }
+form{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
 
 .today{
     width: 100%;
@@ -103,7 +108,7 @@ h4{
     }
 
 .hourlyForecast, .dailyForecast{
-    width: 50%;
+    width: 810px;
     background-color: #ffffff46;
     padding: 18px;
     border-radius: 12px;
@@ -152,7 +157,52 @@ h4{
 
     }
         .dayDiv{
-            display: flex;
+            display: grid;
+            grid-auto-flow: column;
             align-items: center;
-            justify-content: space-around;
+            justify-items: center;
+            grid-template-columns: 1fr 1fr 1fr;
         }
+            
+@media (max-width: 930px) {
+    .hourlyForecast,
+    .dailyForecast {
+        width: 525px;
+        /* padding: 18px;
+        border-radius: 12px; */
+    }
+}
+@media (max-width: 530px) {
+
+    .hourlyForecast,
+    .dailyForecast {
+        width: 100vw;
+        padding: 18px;
+        border-radius: 0px;
+    }
+}
+@media (max-width: 400px) {
+
+    .locationInput {
+        width: 100%;
+    }
+    .realtime{
+        grid-template: 3fr 1fr / 1fr 1fr
+    }
+    .realtimeTop{
+        gap: 0px;
+    }
+    h1{
+        font-size: 25vw;
+
+    }
+    h4{
+        font-size: small;
+    }
+    .icon{
+        width: 35vw;
+        height: auto;
+    }
+    
+}
+
