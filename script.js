@@ -92,7 +92,7 @@ async function getGeoCode(locationSearch) {
       latitude = geocode[0].lat;
       longitude = geocode[0].lon;
 
-      //Display Location 
+      //Display Location
       if (country === 'US') {
             locationOutput.innerHTML = city + ", " + state;
       } else {
@@ -118,7 +118,18 @@ async function getWeather(latitude, longitude) {
         const weatherData = await response.json();
         console.log(weatherData);
 
+        //Get and Convert Current Time
+        const timezone = weatherData.timezone;
+        const currentDate = new Date();
+        const currentUTC = (currentDate.getTime())/1000; 
+        convertTime(currentUTC, timezone);
+        console.log(localFormattedDate, localFormattedTime);
+
+
+
+
         //Display values
+        timeOutput.innerHTML = `${localFormattedDate} | ${localFormattedTime}`;
         currentTemp.innerHTML = Math.round(weatherData.main.temp);
         if (units === 'imperial') {
             realtimeLow.innerHTML = "L: " + Math.round(weatherData.main.temp_min) + "°F";
@@ -226,8 +237,16 @@ function convertTime(forecastUTC, localTimezone) {
     const localTimestamp = forecastUTC + localTimezone;
     const localDate = new Date(localTimestamp * 1000);
 
+    // Array of month names
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    
+    // Extract the month, day, and year from localDate
+    const month = monthNames[localDate.getUTCMonth()]; // getUTCMonth() returns a zero-based index
+    const day = localDate.getUTCDate();
+    const year = localDate.getUTCFullYear();
+
     // Format the local date and time
-    localFormattedDate = localDate.toISOString().split('T')[0]; // Gets the date in YYYY-MM-DD format
+    localFormattedDate = `${month} ${day}, ${year}`; // Format the local date as "Month D, YYYY"
     localFormattedTime = formatTime(localDate);
 
     // Get day of the week
@@ -282,9 +301,7 @@ function displayDailyForecast() {
     }
 
     // Display day temps in specified order
-    orderedDays.forEach(day => {
-        console.log(day, averageTemps[day]);
-    
+    orderedDays.forEach(day => {    
         const dayDiv = document.createElement('div');
         dayDiv.className = 'dayDiv';
         dailyForecastData.appendChild(dayDiv);
