@@ -187,9 +187,7 @@ async function getForecast(latitude, longitude) {
         });
         
         convertTime(forecastData.list[0].dt, localTimezone);
-
         displayDailyForecast();
-        // console.log(temperaturesByDay);
 
         //Display values
 
@@ -319,7 +317,7 @@ function displayDailyForecast() {
         dayDiv.appendChild(dayIcon);
 
         const dayTemp = document.createElement('p');
-        dayTemp.innerHTML = averageTemps[day];
+        dayTemp.innerHTML = averageTemps[day] + unitSign;
         dayTemp.className = 'dayTemp';
         dayDiv.appendChild(dayTemp);
     });
@@ -383,7 +381,7 @@ function calculateAverages() {
                 sum += temps[i];
             }
             averageTemp = sum / temps.length
-            averageTemps[day] = averageTemp.toFixed(1);
+            averageTemps[day] = averageTemp.toFixed(0);
         }else {
             averageTemps[day] = null; // Indicate no data for this day
         }
