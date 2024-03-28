@@ -21,6 +21,7 @@ let forecastUTC = 0;
 let localTimezone = 0;
 let localFormattedDate = '';
 let localFormattedTime = '';
+let currentTime = false;
 let formattedDate = '';
 let dayName = '';
 let dayOfWeek = '';
@@ -119,6 +120,7 @@ async function getWeather(latitude, longitude) {
         console.log(weatherData);
 
         //Get and Convert Current Time
+        currentTime = true;
         const timezone = weatherData.timezone;
         const currentDate = new Date();
         const currentUTC = (currentDate.getTime())/1000; 
@@ -350,6 +352,7 @@ function getDay(localDate) {
     return dayName;
 }
 function formatTime(localDate) {
+    let formatted = '';
     // Calculate AM or PM
     let hours = localDate.getUTCHours();
     const minutes = ('0' + localDate.getUTCMinutes()).slice(-2);
@@ -360,9 +363,14 @@ function formatTime(localDate) {
     hours = hours ? hours : 12; // Convert 0 to 12 for midnight
 
     // Format the local time with AM or PM
-    const localFormattedTime = ('0' + hours).slice(-2) + ':' + minutes + ' ' + ampm;
-
-    return localFormattedTime;
+    if (currentTime === true) {
+        formatted = hours+ ':'+ minutes+ ampm;
+    } else {
+        formatted = hours+ ampm;
+    }
+    
+    currentTime = false;
+    return formatted;
 }
 function calculateAverages() {
     // Loop through temperaturesByDay assigning both the day and temperature
