@@ -11,7 +11,7 @@ const realtimeDescription = document.querySelector('.realtimeDescription');
 const icon = document.querySelector('.icon');
 const hourlyForecastData = document.querySelector('.hourlyForecastData');
 const dailyForecastData = document.querySelector('.dailyForecastData');
-
+const body = document.querySelector('body');
 
 let units = "imperial";
 let unitSign = "F°"
@@ -19,7 +19,7 @@ let locationSearch = 'Phoenix';
 let hourlyTemp = 0;
 let forecastUTC = 0;
 let localTimezone = 0;
-let localTime = 0;
+let localDate = new Date();
 let localFormattedDate = '';
 let localFormattedTime = '';
 let currentTime = false;
@@ -126,14 +126,12 @@ async function getWeather(latitude, longitude) {
         const currentDate = new Date();
         const currentUTC = (currentDate.getTime())/1000; 
         convertTime(currentUTC, timezone);
-        
+        updateBackground(localDate);
         
 
         if (localFormattedTime) {
             console.log(localFormattedTime);
         }
-
-
 
         //Display values
         timeOutput.innerHTML = `${localFormattedDate} | ${localFormattedTime}`;
@@ -239,7 +237,7 @@ function parseLocation(locationString) {
 function convertTime(forecastUTC, localTimezone) {
     // Adjust the timestamp by the timezone offset to get the local time
     const localTimestamp = forecastUTC + localTimezone;
-    const localDate = new Date(localTimestamp * 1000);
+    localDate = new Date(localTimestamp * 1000);
     localTime = localDate.getTime();
 
     // Array of month names
@@ -253,8 +251,6 @@ function convertTime(forecastUTC, localTimezone) {
     // Format the local date and time
     localFormattedDate = `${month} ${day}, ${year}`; // Format the local date as "Month D, YYYY"
     localFormattedTime = formatTime(localDate);
-
-    updateBackground(localDate);
 
     // Get day of the week
     dayName = getDay(localDate);
@@ -396,22 +392,20 @@ function calculateAverages() {
 function updateBackground(localDate) {
     const hours = localDate.getUTCHours(); // Use getUTCHours() because you've manually adjusted localDate to represent local time
 
-    console.log(hours);
-    let backgroundColor = ''; // Default background color
 
-    if (hours >=17 ) {
-        backgroundColor = 'linear-gradient(to bottom, #859dde, #34487a);' // Evening
+    if(hours >= 17) {
+        body.className = 'evening';
     } else if (hours >= 12) {
-        backgroundColor = 'linear-gradient(to bottom, #81bfdc, #477f97);'  // Afternoon
+        body.className = 'afternoon';  // Afternoon
     } else if(hours >=6) {
-        backgroundColor = 'linear-gradient(to bottom, #9cc8dd, #6aa0b7);' //Morning
+        body.className = 'morning'; //Morning
     } else if(hours >=4){
-        backgroundColor = 'linear-gradient(to bottom, #6e66a4, #13111e);' //Dawn
+        body.className = 'dawn'; //Dawn
     } else {
-        backgroundColor = 'linear-gradient(to bottom, #383647, #0d0d10);' //Night
+        body.className = 'night'; //Night
     }
-    console.log(backgroundColor);
-
-    document.body.style.background = backgroundColor;
-    // console.log(document.body.style.background);
 }
+document.addEventListener('DOMContentLoaded', function() {
+    updateBackground(localDate);
+});
+
