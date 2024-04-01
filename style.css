@@ -10,8 +10,11 @@ body {
     display: flex;
     flex-direction: column;
     color: #ffffff;
-    background-color: #7caec3;
-    background: linear-gradient(to bottom, #81bfdc, #477f97);
+    background: linear-gradient(to bottom, #9cc8dd, #6aa0b7); 
+    /* background: linear-gradient(to bottom, #81bfdc, #477f97); Afternoon */
+    /* background: linear-gradient(to bottom, #859dde, #34487a); Evening */
+    /* background: linear-gradient(to bottom, #6e66a4, #13111e); Dawn */
+    /* background: linear-gradient(to bottom, #383647, #0d0d10);  */
     font-family: "Libre Franklin", sans-serif;
 }
 
@@ -135,7 +138,7 @@ form{
     .hourlyForecastData{
         display: grid;
         grid-auto-flow: column;
-        gap: 68px;
+        gap: 100px;
         text-align: center;
         overflow-x: auto;
         white-space: nowrap;
