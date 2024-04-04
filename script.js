@@ -191,10 +191,6 @@ async function getForecast(latitude, longitude) {
         
         convertTime(forecastData.list[0].dt, localTimezone);
         displayDailyForecast();
-
-        //Display values
-
-        //Update icons
         
   } catch (e){
     console.log(e)
@@ -314,11 +310,6 @@ function displayDailyForecast() {
         dayDay.className = 'dayDay';
         dayDiv.appendChild(dayDay);
 
-        const dayIcon = document.createElement('img');
-        dayIcon.src = 'icons/cloudy-sun.png';
-        dayIcon.className = 'dayIcon';
-        dayDiv.appendChild(dayIcon);
-
         const dayTemp = document.createElement('p');
         dayTemp.innerHTML = averageTemps[day] + unitSign;
         dayTemp.className = 'dayTemp';
@@ -391,7 +382,6 @@ function calculateAverages() {
 }
 function updateBackground(localDate) {
     const hours = localDate.getUTCHours(); // Use getUTCHours() because you've manually adjusted localDate to represent local time
-
 
     if(hours >= 17) {
         body.className = 'evening';

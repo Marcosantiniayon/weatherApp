@@ -176,30 +176,30 @@ form{
                 flex-direction: column;
             }
 .dailyForecast {
-    display: flex;
-    flex-direction: column;
-    margin-top: 24px;
+    margin-bottom: 24px;
     background-color: #ffffff3b;
     padding: 12px;
     border-radius: 12px;
 }
     .dailyForecastData{
-
+        display: flex;
+        gap: 80px;
+        justify-content: center;
     }
         .dayDiv{
-            display: grid;
-            grid-auto-flow: column;
+            display: flex;
+            flex-direction: column;
             align-items: center;
             justify-items: center;
-            grid-template-columns: 1fr 1fr 1fr;
         }
             
 @media (max-width: 930px) {
     .hourlyForecast,
     .dailyForecast {
         width: 525px;
-        /* padding: 18px;
-        border-radius: 12px; */
+    }
+    .dailyForecastData {
+        gap:40px
     }
 }
 @media (max-width: 530px) {
@@ -209,6 +209,9 @@ form{
         width: 100vw;
         padding: 18px;
         border-radius: 0px;
+    }
+    .dailyForecastData {
+        gap: 40px
     }
 }
 @media (max-width: 400px) {
@@ -232,6 +235,9 @@ form{
     .icon{
         width: 35vw;
         height: auto;
+    }
+    .dailyForecastData {
+        gap: 20px
     }
     
 }
