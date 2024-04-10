@@ -195,6 +195,9 @@ form{
             align-items: center;
             justify-items: center;
             background-color: #ffffff3b;
+            width: 100%;
+            min-width: 120px;
+            margin: 0px 2px 0px 2px;
             padding: 24px;
             border-radius: 12px;
         }
@@ -210,8 +213,12 @@ form{
     .dailyForecast {
         width: 525px;
     }
-    .dailyForecastData {
-        gap:40px
+    .hourlyForecastData {
+        gap: 60px;
+    }
+    .dayDiv {
+        padding: 10px;
+        min-width: 0;
     }
 }
 @media (max-width: 530px) {
@@ -222,8 +229,11 @@ form{
         padding: 18px;
         border-radius: 0px;
     }
-    .dailyForecastData {
-        gap: 40px
+    .hourlyForecastData {
+        gap: 33px;
+    }
+    .dayDiv {
+        min-width: 0;
     }
 }
 @media (max-width: 400px) {
@@ -248,9 +258,15 @@ form{
         width: 35vw;
         height: auto;
     }
-    .dailyForecastData {
-        gap: 20px
+    .dayDay, .dayTemp{
+        font-size: small;
     }
+    .hourlyForecastData{
+        gap: 30px;
+    }
+    /* .dailyForecastData {
+        gap: 20px
+    } */
     
 }
 
