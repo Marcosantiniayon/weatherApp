@@ -95,7 +95,7 @@ form{
     font-size: small;
 }
 .realtime {
-    width: 15%;
+    /* width: 15%; */
     display: grid;
     grid-auto-flow: column;
     grid-template: 4fr 1fr / 1fr 1fr;
@@ -104,7 +104,7 @@ form{
     .realtimeTop {
         display: flex;
         align-items: center;
-        gap: 24px;
+        /* gap: 24px; */
     }
     .realtimeLowHigh {
         display: flex;
@@ -115,12 +115,15 @@ form{
         padding: 12px;
         align-self: center;
         justify-self: center;
+        margin: 0px 0px 0px 20px;
     }
     .realtimeDescription{
         justify-self: center;
+        margin: 0px 0px 0px 20px;
     }
 
 .unitBtn{
+    margin-left: auto;
     border-radius: 24px;
     align-self: baseline;
 }
@@ -137,10 +140,11 @@ form{
         background-color: #858585;
     }
 
-.hourlyForecast, .dailyForecast{
+.hourlyForecast{
     width: 810px;
+    margin: 24px 0px 24px 0px;
     background-color: #ffffff3b;
-    padding: 18px;
+    padding: 26px;
     border-radius: 12px;
 }
     h3{
@@ -152,7 +156,7 @@ form{
     .hourlyForecastData{
         display: grid;
         grid-auto-flow: column;
-        gap: 100px;
+        gap: 66px;
         text-align: center;
         overflow-x: auto;
         white-space: nowrap;
@@ -163,35 +167,43 @@ form{
             align-items: center;
         }
         .hourDiv > *{
-            margin: 4px;
+            margin: 6px 0px 0px 0px;
             font-size: .85rem;
         }
-            .hourDay {
-                /* font-size: smaller; */
-                margin-bottom: 0px;
-            }
             .hourIcon, .dayIcon{
                 width: 35px;
                 display: flex;
                 flex-direction: column;
             }
 .dailyForecast {
-    margin-bottom: 24px;
-    background-color: #ffffff3b;
-    padding: 12px;
+    width: 810px;
+    /* padding: 26px; */
+    /* margin: 24px 0px 24px 0px; */
     border-radius: 12px;
+    /* background-color: #ffffff3b; */
 }
+    .dailyForecastTitle{
+        margin: 12px 24px;
+    }
     .dailyForecastData{
         display: flex;
-        gap: 80px;
-        justify-content: center;
+        justify-content: space-between;
     }
         .dayDiv{
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-items: center;
+            background-color: #ffffff3b;
+            padding: 24px;
+            border-radius: 12px;
         }
+            .dayDay{
+                margin: 6px 0px 0px 0px;
+            }
+            .dayTemp{
+                margin: 6px 0px 0px 0px;
+            }
             
 @media (max-width: 930px) {
     .hourlyForecast,

@@ -13,6 +13,7 @@ const hourlyForecastData = document.querySelector('.hourlyForecastData');
 const dailyForecastData = document.querySelector('.dailyForecastData');
 const body = document.querySelector('body');
 
+let iconImg = "";
 let units = "imperial";
 let unitSign = "F°"
 let locationSearch = 'Phoenix';
@@ -58,7 +59,8 @@ window.onload = function(){
 locationInput.addEventListener('keypress', function (event) {
     if (event.key === 'Enter') {
         event.preventDefault(); 
-        getGeoCode(locationInput.value);
+        locationSearch = locationInput.value;
+        getGeoCode(locationSearch);
     }
 });
 
@@ -147,6 +149,7 @@ async function getWeather(latitude, longitude) {
         realtimeDescription.innerHTML = weatherData.weather[0].description;
 
         //Update icon
+        
         if (realtimeDescription.innerHTML.includes('clouds')){
             icon.src = "icons/overcast.png"
         } else if (realtimeDescription.innerHTML.includes('thunderstorm')){
@@ -184,6 +187,7 @@ async function getForecast(latitude, longitude) {
         forecastData.list.forEach(index => {
             hourlyTemp = Math.round(index.main.temp) + unitSign;
             forecastUTC = index.dt;
+
             convertTime(forecastUTC, localTimezone);
             displayHourlyForecast();
             dayTemps(hourlyTemp, dayName);
@@ -266,19 +270,14 @@ function displayHourlyForecast() {
     hourlyForecastData.appendChild(hourDiv);
 
     const hourDay = document.createElement('p');
-    hourDay.innerHTML = `${dayName}`;
+    hourDay.innerHTML = `${dayName} • ${localFormattedTime}`;
     hourDay.className = 'hourDay';
     hourDiv.appendChild(hourDay);
 
-    const hourTime = document.createElement('p');
-    hourTime.innerHTML = `${localFormattedTime}`;
-    hourTime.className = 'hourTime';
-    hourDiv.appendChild(hourTime);
-
-    const hourIcon = document.createElement('img');
-    hourIcon.src = 'icons/cloudy-sun.png';
-    hourIcon.className = 'hourIcon';
-    hourDiv.appendChild(hourIcon);
+    // const hourTime = document.createElement('p');
+    // hourTime.innerHTML = `${localFormattedTime}`;
+    // hourTime.className = 'hourTime';
+    // hourDiv.appendChild(hourTime);
 
     const hourTemp = document.createElement('p');
     hourTemp.innerHTML = hourlyTemp;
@@ -325,6 +324,7 @@ function clearForecasts() {
         dailyForecastData.removeChild(dailyForecastData.firstChild);
     }
 }
+
 // Helper Functions
 function getTodaysDate() {
     const today = new Date();
@@ -395,7 +395,23 @@ function updateBackground(localDate) {
         body.className = 'night'; //Night
     }
 }
+function updateIcon(weatherDescription) {
+    if (weatherDescription.innerHTML.includes('clouds')){
+        iconImg = "icons/overcast.png"
+    } else if (weatherDescription.innerHTML.includes('thunderstorm')){
+        iconImg = "icons/thunder.png"
+    } else if (weatherDescription.innerHTML.includes('drizzle')){
+        iconImg = "icons/sprinkles.png"
+    } else if (weatherDescription.innerHTML.includes('rain')){
+        iconImg = "icons/rainy.png"
+    } else if (weatherDescription.innerHTML.includes('snow')){
+        iconImg = "icons/snow.png"
+    } else if (weatherDescription.innerHTML.includes('clear')){
+        iconImg = "icons/clear-day.png"
+    };
+    
+    return iconImg;
+}
 document.addEventListener('DOMContentLoaded', function() {
     updateBackground(localDate);
 });
-
