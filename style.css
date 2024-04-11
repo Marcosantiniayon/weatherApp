@@ -224,11 +224,14 @@ form{
 }
 @media (max-width: 530px) {
 
-    .hourlyForecast,
-    .dailyForecast {
+    .hourlyForecast {
         width: 100vw;
-        padding: 18px;
         border-radius: 0px;
+        padding: 18px;
+    }
+    .dailyForecast{
+        width: 100vw;
+        padding: 18px 5px 18px 5px;
     }
     .hourlyForecastData {
         gap: 33px;
@@ -261,9 +264,6 @@ form{
     .hourlyForecastData{
         gap: 30px;
     }
-    /* .dailyForecastData {
-        gap: 20px
-    } */
     
 }
 
