@@ -23,6 +23,8 @@ let localTimezone = 0;
 let localDate = new Date();
 let localFormattedDate = '';
 let localFormattedTime = '';
+let hours = 0;
+let night = false;
 let currentTime = false;
 let formattedDate = '';
 let dayName = '';
@@ -83,6 +85,8 @@ unitBtn.addEventListener('click', function () {
 
 async function getGeoCode(locationSearch) {
     const url = `https://api.openweathermap.org/geo/1.0/direct?q=${locationSearch}&limit=5&appid=${apiKey}`     
+    document.querySelector('.loading').style.display = 'block';
+    document.querySelector('.content').style.display = 'none';
     locationOutput.innerHTML = 'Loading...';
   try {
       //Make fetch request and stores it as response
@@ -106,9 +110,14 @@ async function getGeoCode(locationSearch) {
       getWeather(latitude, longitude);
       getForecast(latitude, longitude);
 
+      document.querySelector('.loading').style.display = 'none';
+      document.querySelector('.content').style.display = 'flex';
+
   } catch (e){
       console.log(e)
       locationOutput.innerHTML = 'City Error... Please enter correct city name';
+      document.querySelector('.loading').style.display = 'none';
+      document.querySelector('.content').style.display = 'flex';
   };  
   
 }
@@ -129,7 +138,14 @@ async function getWeather(latitude, longitude) {
         const currentUTC = (currentDate.getTime())/1000; 
         convertTime(currentUTC, timezone);
         updateBackground(localDate);
-        
+
+        if (hours >= 17 || hours <= 5) {
+            night = true
+        } else {
+            night = false;
+        }
+        console.log(hours)
+        console.log(night);
 
         if (localFormattedTime) {
             console.log(localFormattedTime);
@@ -150,7 +166,7 @@ async function getWeather(latitude, longitude) {
 
         //Update icon
         
-        if (realtimeDescription.innerHTML.includes('clouds')){
+        if (realtimeDescription.innerHTML.includes('clouds') && night == false){
             icon.src = "icons/overcast.png"
         } else if (realtimeDescription.innerHTML.includes('thunderstorm')){
             icon.src = "icons/thunder.png"
@@ -160,8 +176,12 @@ async function getWeather(latitude, longitude) {
             icon.src = "icons/rainy.png"
         } else if (realtimeDescription.innerHTML.includes('snow')){
             icon.src = "icons/snow.png"
-        } else if (realtimeDescription.innerHTML.includes('clear')){
+        } else if (realtimeDescription.innerHTML.includes('clear') && night == false){
             icon.src = "icons/clear-day.png"
+        } else if (realtimeDescription.innerHTML.includes('clear') && night == true){
+            icon.src = "icons/clear-night.png"
+        } else if (realtimeDescription.innerHTML.includes('clouds') && night == true){
+            icon.src = "icons/cloudy-night.png"
         };
   } catch (e){
     console.log(e)
@@ -344,19 +364,19 @@ function getDay(localDate) {
 function formatTime(localDate) {
     let formatted = '';
     // Calculate AM or PM
-    let hours = localDate.getUTCHours();
+    hours = localDate.getUTCHours();
     const minutes = ('0' + localDate.getUTCMinutes()).slice(-2);
     const ampm = hours >= 12 ? 'PM' : 'AM';
 
     // Convert to 12-hour format
-    hours = hours % 12;
-    hours = hours ? hours : 12; // Convert 0 to 12 for midnight
+    let hours12 = hours % 12;
+    hours12 = hours12 ? hours12 : 12; // Convert 0 to 12 for midnight
 
     // Format the local time with AM or PM
     if (currentTime === true) {
-        formatted = hours+ ':'+ minutes+ ampm;
+        formatted = hours12+ ':'+ minutes+ ampm;
     } else {
-        formatted = hours+ ampm;
+        formatted = hours12+ ampm;
     }
     
     currentTime = false;

@@ -12,34 +12,39 @@
 </head>
 <body>
     <div class="main">
-        <form action="">
-            <input class="locationInput" type="text" placeholder="Enter City">
-        </form>
-        <p class="locationOutput"></p>
-        <p class="timeOutput"></p>
-        <div class="realtime">
-            <div class="realtimeTop">
-                <h1 class="currentTemp">Temp</h1>
-                <button class="unitBtn imperial">°F</button>
-            </div>
-            <div class="realtimeLowHigh">
-                <h4 class="realtimeLow">Low</h4>
-                <h4 class="realtimeHigh">High</h4>
-            </div>
-            <img class="icon" src="" alt="">
-            <h4 class="realtimeDescription">Sunny</h4>
+        <div class="loading">
+            <div class="spinner"></div>
         </div>
-        <div class="hourlyForecast">
-            <h3 class>3 Hour Forecast</h3>
-            <div class="hourlyForecastData">
+        <div class="content">
+            <form action="">
+                <input class="locationInput" type="text" placeholder="Enter City">
+            </form>
+            <p class="locationOutput"></p>
+            <p class="timeOutput"></p>
+            <div class="realtime">
+                <div class="realtimeTop">
+                    <h1 class="currentTemp"></h1>
+                    <button class="unitBtn imperial">°F</button>
+                </div>
+                <div class="realtimeLowHigh">
+                    <h4 class="realtimeLow"></h4>
+                    <h4 class="realtimeHigh"></h4>
+                </div>
+                <img class="icon" src="" alt="">
+                <h4 class="realtimeDescription"></h4>
             </div>
-        </div>
-        <div class="dailyForecast">
-            <h3 class="dailyForecastTitle">Daily Forecast</h3>
-            <div class="dailyForecastData">
-
+            <div class="hourlyForecast">
+                <h3 class>3 Hour Forecast</h3>
+                <div class="hourlyForecastData">
+                </div>
             </div>
-        
+            <div class="dailyForecast">
+                <h3 class="dailyForecastTitle">Daily Forecast</h3>
+                <div class="dailyForecastData">
+            
+                </div>
+            
+            </div>
         </div>
     </div>
     <footer>
