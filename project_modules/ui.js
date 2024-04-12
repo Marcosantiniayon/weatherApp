@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     updateBackground(localDate);
 });
-
 locationInput.addEventListener('keypress', function (event) {
     if (event.key === 'Enter') {
         event.preventDefault(); 
@@ -9,7 +8,6 @@ locationInput.addEventListener('keypress', function (event) {
         getGeoCode(locationSearch);
     }
 });
-
 unitBtn.addEventListener('click', function () {
     if (units === "imperial") { //Change to Metric (C), run getGeoCode
         unitBtn.classList.remove('imperial');
@@ -26,7 +24,6 @@ unitBtn.addEventListener('click', function () {
     }
     unitBtn.innerHTML = unitSign;
 });
-
 function displayHourlyForecast() {    
     const hourDiv = document.createElement('div');
     hourDiv.className = 'hourDiv';
@@ -47,7 +44,6 @@ function displayHourlyForecast() {
     hourTemp.className = 'hourTemp';
     hourDiv.appendChild(hourTemp);
 }
-
 function displayDailyForecast() {
     console.log(averageTemps);
     
@@ -79,7 +75,6 @@ function displayDailyForecast() {
         dayDiv.appendChild(dayTemp);
     });
 }
-
 function updateBackground(localDate) {
     const hours = localDate.getUTCHours(); // Use getUTCHours() because you've manually adjusted localDate to represent local time
 
@@ -95,7 +90,6 @@ function updateBackground(localDate) {
         body.className = 'night'; //Night
     }
 }
-
 function updateIcon(weatherDescription) {
     if (weatherDescription.innerHTML.includes('clouds')){
         iconImg = "icons/overcast.png"
@@ -112,4 +106,12 @@ function updateIcon(weatherDescription) {
     };
     
     return iconImg;
+}
+function showLoad() {
+    document.querySelector('.loading').style.display = 'none';
+    document.querySelector('.content').style.display = 'flex';
+}
+function hideLoad() {
+    document.querySelector('.loading').style.display = 'block';
+    document.querySelector('.content').style.display = 'none';
 }
