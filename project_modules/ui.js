@@ -9,6 +9,7 @@ locationInput.addEventListener('keypress', function (event) {
         getGeoCode(locationSearch);
     }
 });
+
 unitBtn.addEventListener('click', function () {
     if (units === "imperial") { //Change to Metric (C), run getGeoCode
         unitBtn.classList.remove('imperial');
@@ -46,6 +47,7 @@ function displayHourlyForecast() {
     hourTemp.className = 'hourTemp';
     hourDiv.appendChild(hourTemp);
 }
+
 function displayDailyForecast() {
     console.log(averageTemps);
     
@@ -76,4 +78,38 @@ function displayDailyForecast() {
         dayTemp.className = 'dayTemp';
         dayDiv.appendChild(dayTemp);
     });
+}
+
+function updateBackground(localDate) {
+    const hours = localDate.getUTCHours(); // Use getUTCHours() because you've manually adjusted localDate to represent local time
+
+    if(hours >= 17) {
+        body.className = 'evening';
+    } else if (hours >= 12) {
+        body.className = 'afternoon';  // Afternoon
+    } else if(hours >=6) {
+        body.className = 'morning'; //Morning
+    } else if(hours >=4){
+        body.className = 'dawn'; //Dawn
+    } else {
+        body.className = 'night'; //Night
+    }
+}
+
+function updateIcon(weatherDescription) {
+    if (weatherDescription.innerHTML.includes('clouds')){
+        iconImg = "icons/overcast.png"
+    } else if (weatherDescription.innerHTML.includes('thunderstorm')){
+        iconImg = "icons/thunder.png"
+    } else if (weatherDescription.innerHTML.includes('drizzle')){
+        iconImg = "icons/sprinkles.png"
+    } else if (weatherDescription.innerHTML.includes('rain')){
+        iconImg = "icons/rainy.png"
+    } else if (weatherDescription.innerHTML.includes('snow')){
+        iconImg = "icons/snow.png"
+    } else if (weatherDescription.innerHTML.includes('clear')){
+        iconImg = "icons/clear-day.png"
+    };
+    
+    return iconImg;
 }

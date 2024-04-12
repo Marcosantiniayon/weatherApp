@@ -125,13 +125,24 @@ function dayTemps(hourlyTemp, dayName) {
     }
 }
 function clearForecasts() {
-    //Hourly ForecastData
+    //Hourly ForecastData Display
     while (hourlyForecastData.firstChild) {
         hourlyForecastData.removeChild(hourlyForecastData.firstChild);
     }
     while (dailyForecastData.firstChild) {
         dailyForecastData.removeChild(dailyForecastData.firstChild);
     }
+
+    //Daily Forecast Data for calculation
+    temperaturesByDay = {
+            'Sun': [],
+            'Mon': [],
+            'Tues': [],
+            'Wed': [],
+            'Thur': [],
+            'Fri': [],
+            'Sat': []
+    };
 }
 
 // Helper Functions
@@ -187,16 +198,6 @@ function calculateAverages() {
             averageTemps[day] = null; // Indicate no data for this day
         }
     }
-    //Clear temps used to calculate average after calculating 
-    temperaturesByDay = {
-        'Sun': [],
-        'Mon': [],
-        'Tues': [],
-        'Wed': [],
-        'Thur': [],
-        'Fri': [],
-        'Sat': []
-    };
 
 }
 function updateBackground(localDate) {
@@ -230,15 +231,4 @@ function updateIcon(weatherDescription) {
     };
     
     return iconImg;
-}
-
-
-function showLoad() {
-    document.querySelector('.loading').style.display = 'block';
-    document.querySelector('.content').style.display = 'none';
-}
-
-function hideLoad() {
-    document.querySelector('.loading').style.display = 'none';
-    document.querySelector('.content').style.display = 'flex';
 }
