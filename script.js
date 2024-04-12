@@ -200,6 +200,15 @@ async function getForecast(latitude, longitude) {
 
         // Clear Old Data
         clearForecasts();
+        temperaturesByDay = {
+            'Sun': [],
+            'Mon': [],
+            'Tues': [],
+            'Wed': [],
+            'Thur': [],
+            'Fri': [],
+            'Sat': []
+        };
 
         console.log(temperaturesByDay);
 
@@ -401,16 +410,6 @@ function calculateAverages() {
             averageTemps[day] = null; // Indicate no data for this day
         }
     }
-    //Clear temps used to calculate average after calculating 
-    temperaturesByDay = {
-        'Sun': [],
-        'Mon': [],
-        'Tues': [],
-        'Wed': [],
-        'Thur': [],
-        'Fri': [],
-        'Sat': []
-    };
 
 }
 function updateBackground(localDate) {
