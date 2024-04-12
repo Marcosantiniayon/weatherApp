@@ -67,13 +67,13 @@ locationInput.addEventListener('keypress', function (event) {
 });
 
 unitBtn.addEventListener('click', function () {
-    if (units === "imperial") {
+    if (units === "imperial") { //Change to Metric (C), run getGeoCode
         unitBtn.classList.remove('imperial');
         unitBtn.classList.add('metric');
         units = "metric";
         unitSign = "C°"
         getGeoCode(locationSearch);
-    } else {
+    } else { //Change to Imperial (F), run getGeoCode
         unitBtn.classList.remove('metric');
         unitBtn.classList.add('imperial');
         units = "imperial";
@@ -83,11 +83,13 @@ unitBtn.addEventListener('click', function () {
     unitBtn.innerHTML = unitSign;
 });
 
-async function getGeoCode(locationSearch) {
-    const url = `https://api.openweathermap.org/geo/1.0/direct?q=${locationSearch}&limit=5&appid=${apiKey}`     
+async function getGeoCode(locationSearch) { //Gets location info, runs getWeather & getForecast, displays content
+    const url = `https://api.openweathermap.org/geo/1.0/direct?q=${locationSearch}&limit=5&appid=${apiKey}`
+    //Display load, hide content
     document.querySelector('.loading').style.display = 'block';
     document.querySelector('.content').style.display = 'none';
     locationOutput.innerHTML = 'Loading...';
+
   try {
       //Make fetch request and stores it as response
       const response = await fetch(url, { mode: 'cors' });
@@ -110,6 +112,7 @@ async function getGeoCode(locationSearch) {
       getWeather(latitude, longitude);
       getForecast(latitude, longitude);
 
+      //Hide load, display content
       document.querySelector('.loading').style.display = 'none';
       document.querySelector('.content').style.display = 'flex';
 
@@ -124,36 +127,34 @@ async function getGeoCode(locationSearch) {
 async function getWeather(latitude, longitude) {
     const url = `https://api.openweathermap.org/data/2.5/weather?units=${units}&lat=${latitude}&lon=${longitude}&appid=${apiKey}`
     try {
-        //Make fetch request and stores it as response
+        //Fetch request and store it as response
         const response = await fetch(url, { mode: 'cors' });
       
         //Store the JSON 
         const weatherData = await response.json();
         console.log(weatherData);
 
-        //Get and Convert Current Time
+        //Get Time
         currentTime = true;
         const timezone = weatherData.timezone;
         const currentDate = new Date();
-        const currentUTC = (currentDate.getTime())/1000; 
+        const currentUTC = (currentDate.getTime()) / 1000; 
+    
         convertTime(currentUTC, timezone);
         updateBackground(localDate);
 
+        // Update if day or night
         if (hours >= 17 || hours <= 5) {
             night = true
         } else {
             night = false;
         }
-        console.log(hours)
-        console.log(night);
 
-        if (localFormattedTime) {
-            console.log(localFormattedTime);
-        }
-
-        //Display values
+        //Display temp values
         timeOutput.innerHTML = `${localFormattedDate} | ${localFormattedTime}`;
         currentTemp.innerHTML = Math.round(weatherData.main.temp);
+        realtimeDescription.innerHTML = weatherData.weather[0].description;
+
         if (units === 'imperial') {
             realtimeLow.innerHTML = "L: " + Math.round(weatherData.main.temp_min) + "°F";
             realtimeHigh.innerHTML = "H: " + Math.round(weatherData.main.temp_max) + "°F";
@@ -161,11 +162,8 @@ async function getWeather(latitude, longitude) {
             realtimeLow.innerHTML = "L: " + Math.round(weatherData.main.temp_min) + "°C";
             realtimeHigh.innerHTML = "H: " + Math.round(weatherData.main.temp_max) + "°C";
         }
-        
-        realtimeDescription.innerHTML = weatherData.weather[0].description;
 
         //Update icon
-        
         if (realtimeDescription.innerHTML.includes('clouds') && night == false){
             icon.src = "icons/overcast.png"
         } else if (realtimeDescription.innerHTML.includes('thunderstorm')){
@@ -203,6 +201,8 @@ async function getForecast(latitude, longitude) {
         // Clear Old Data
         clearForecasts();
 
+        console.log(temperaturesByDay);
+
         // Get Hourly Forecast Data 
         forecastData.list.forEach(index => {
             hourlyTemp = Math.round(index.main.temp) + unitSign;
@@ -210,6 +210,7 @@ async function getForecast(latitude, longitude) {
 
             convertTime(forecastUTC, localTimezone);
             displayHourlyForecast();
+            
             dayTemps(hourlyTemp, dayName);
         });
         
@@ -279,6 +280,7 @@ function convertTime(forecastUTC, localTimezone) {
 function dayTemps(hourlyTemp, dayName) {
     // Convert hourlyTemp from string to number and remove the unit
     const tempValue = parseFloat(hourlyTemp);
+
     // Store the temperature value in the corresponding day array
     if (!isNaN(tempValue)) {
         temperaturesByDay[dayName].push(tempValue);
@@ -306,6 +308,7 @@ function displayHourlyForecast() {
 }
 function displayDailyForecast() {
     calculateAverages();
+    console.log(averageTemps);
     
     // Input days in order of week starting with the day after the current day
     const orderedDays = [];
@@ -398,6 +401,16 @@ function calculateAverages() {
             averageTemps[day] = null; // Indicate no data for this day
         }
     }
+    //Clear temps used to calculate average after calculating 
+    temperaturesByDay = {
+        'Sun': [],
+        'Mon': [],
+        'Tues': [],
+        'Wed': [],
+        'Thur': [],
+        'Fri': [],
+        'Sat': []
+    };
 
 }
 function updateBackground(localDate) {
