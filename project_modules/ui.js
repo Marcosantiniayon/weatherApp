@@ -1,0 +1,79 @@
+document.addEventListener('DOMContentLoaded', function() {
+    updateBackground(localDate);
+});
+
+locationInput.addEventListener('keypress', function (event) {
+    if (event.key === 'Enter') {
+        event.preventDefault(); 
+        locationSearch = locationInput.value;
+        getGeoCode(locationSearch);
+    }
+});
+unitBtn.addEventListener('click', function () {
+    if (units === "imperial") { //Change to Metric (C), run getGeoCode
+        unitBtn.classList.remove('imperial');
+        unitBtn.classList.add('metric');
+        units = "metric";
+        unitSign = "C°"
+        getGeoCode(locationSearch);
+    } else { //Change to Imperial (F), run getGeoCode
+        unitBtn.classList.remove('metric');
+        unitBtn.classList.add('imperial');
+        units = "imperial";
+        unitSign = "F°"
+        getGeoCode(locationSearch);
+    }
+    unitBtn.innerHTML = unitSign;
+});
+
+function displayHourlyForecast() {    
+    const hourDiv = document.createElement('div');
+    hourDiv.className = 'hourDiv';
+    hourlyForecastData.appendChild(hourDiv);
+
+    const hourDay = document.createElement('p');
+    hourDay.innerHTML = `${dayName} • ${localFormattedTime}`;
+    hourDay.className = 'hourDay';
+    hourDiv.appendChild(hourDay);
+
+    // const hourTime = document.createElement('p');
+    // hourTime.innerHTML = `${localFormattedTime}`;
+    // hourTime.className = 'hourTime';
+    // hourDiv.appendChild(hourTime);
+
+    const hourTemp = document.createElement('p');
+    hourTemp.innerHTML = hourlyTemp;
+    hourTemp.className = 'hourTemp';
+    hourDiv.appendChild(hourTemp);
+}
+function displayDailyForecast() {
+    console.log(averageTemps);
+    
+    // Input days in order of week starting with the day after the current day
+    const orderedDays = [];
+    currentDay = dayOfWeek;
+    for (let i = 0; i <= 6; i++) {
+        const dayOfWeek = (currentDay + i) % 7;
+        const dayName = ['Sun', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat'][dayOfWeek];
+        if (averageTemps[dayName] !== null) {
+            orderedDays.push(dayName);
+        }
+    }
+
+    // Display day temps in specified order
+    orderedDays.forEach(day => {    
+        const dayDiv = document.createElement('div');
+        dayDiv.className = 'dayDiv';
+        dailyForecastData.appendChild(dayDiv);
+
+        const dayDay = document.createElement('p');
+        dayDay.innerHTML = `${day}`;
+        dayDay.className = 'dayDay';
+        dayDiv.appendChild(dayDay);
+
+        const dayTemp = document.createElement('p');
+        dayTemp.innerHTML = averageTemps[day] + unitSign;
+        dayTemp.className = 'dayTemp';
+        dayDiv.appendChild(dayTemp);
+    });
+}

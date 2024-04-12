@@ -58,169 +58,7 @@ window.onload = function(){
     getGeoCode(locationSearch);
 }
 
-locationInput.addEventListener('keypress', function (event) {
-    if (event.key === 'Enter') {
-        event.preventDefault(); 
-        locationSearch = locationInput.value;
-        getGeoCode(locationSearch);
-    }
-});
 
-unitBtn.addEventListener('click', function () {
-    if (units === "imperial") { //Change to Metric (C), run getGeoCode
-        unitBtn.classList.remove('imperial');
-        unitBtn.classList.add('metric');
-        units = "metric";
-        unitSign = "C°"
-        getGeoCode(locationSearch);
-    } else { //Change to Imperial (F), run getGeoCode
-        unitBtn.classList.remove('metric');
-        unitBtn.classList.add('imperial');
-        units = "imperial";
-        unitSign = "F°"
-        getGeoCode(locationSearch);
-    }
-    unitBtn.innerHTML = unitSign;
-});
-
-async function getGeoCode(locationSearch) { //Gets location info, runs getWeather & getForecast, displays content
-    const url = `https://api.openweathermap.org/geo/1.0/direct?q=${locationSearch}&limit=5&appid=${apiKey}`
-    //Display load, hide content
-    document.querySelector('.loading').style.display = 'block';
-    document.querySelector('.content').style.display = 'none';
-    locationOutput.innerHTML = 'Loading...';
-
-  try {
-      //Make fetch request and stores it as response
-      const response = await fetch(url, { mode: 'cors' });
-      
-      //Store the JSON 
-      const geocode = await response.json();
-      city = geocode[0].name;
-      state = geocode[0].state;
-      country = geocode[0].country;
-      latitude = geocode[0].lat;
-      longitude = geocode[0].lon;
-
-      //Display Location
-      if (country === 'US') {
-            locationOutput.innerHTML = city + ", " + state;
-      } else {
-            locationOutput.innerHTML = city + ", " + state + ", " + country;
-      }
-
-      getWeather(latitude, longitude);
-      getForecast(latitude, longitude);
-
-      //Hide load, display content
-      document.querySelector('.loading').style.display = 'none';
-      document.querySelector('.content').style.display = 'flex';
-
-  } catch (e){
-      console.log(e)
-      locationOutput.innerHTML = 'City Error... Please enter correct city name';
-      document.querySelector('.loading').style.display = 'none';
-      document.querySelector('.content').style.display = 'flex';
-  };  
-  
-}
-async function getWeather(latitude, longitude) {
-    const url = `https://api.openweathermap.org/data/2.5/weather?units=${units}&lat=${latitude}&lon=${longitude}&appid=${apiKey}`
-    try {
-        //Fetch request and store it as response
-        const response = await fetch(url, { mode: 'cors' });
-      
-        //Store the JSON 
-        const weatherData = await response.json();
-        console.log(weatherData);
-
-        //Get Time
-        currentTime = true;
-        const timezone = weatherData.timezone;
-        const currentDate = new Date();
-        const currentUTC = (currentDate.getTime()) / 1000; 
-    
-        convertTime(currentUTC, timezone);
-        updateBackground(localDate);
-
-        // Update if day or night
-        if (hours >= 17 || hours <= 5) {
-            night = true
-        } else {
-            night = false;
-        }
-
-        //Display temp values
-        timeOutput.innerHTML = `${localFormattedDate} | ${localFormattedTime}`;
-        currentTemp.innerHTML = Math.round(weatherData.main.temp);
-        realtimeDescription.innerHTML = weatherData.weather[0].description;
-
-        if (units === 'imperial') {
-            realtimeLow.innerHTML = "L: " + Math.round(weatherData.main.temp_min) + "°F";
-            realtimeHigh.innerHTML = "H: " + Math.round(weatherData.main.temp_max) + "°F";
-        } else {
-            realtimeLow.innerHTML = "L: " + Math.round(weatherData.main.temp_min) + "°C";
-            realtimeHigh.innerHTML = "H: " + Math.round(weatherData.main.temp_max) + "°C";
-        }
-
-        //Update icon
-        if (realtimeDescription.innerHTML.includes('clouds') && night == false){
-            icon.src = "icons/overcast.png"
-        } else if (realtimeDescription.innerHTML.includes('thunderstorm')){
-            icon.src = "icons/thunder.png"
-        } else if (realtimeDescription.innerHTML.includes('drizzle')){
-            icon.src = "icons/sprinkles.png"
-        } else if (realtimeDescription.innerHTML.includes('rain')){
-            icon.src = "icons/rainy.png"
-        } else if (realtimeDescription.innerHTML.includes('snow')){
-            icon.src = "icons/snow.png"
-        } else if (realtimeDescription.innerHTML.includes('clear') && night == false){
-            icon.src = "icons/clear-day.png"
-        } else if (realtimeDescription.innerHTML.includes('clear') && night == true){
-            icon.src = "icons/clear-night.png"
-        } else if (realtimeDescription.innerHTML.includes('clouds') && night == true){
-            icon.src = "icons/cloudy-night.png"
-        };
-  } catch (e){
-    console.log(e)
-  };  
-}
-async function getForecast(latitude, longitude) {
-    const url = `https://api.openweathermap.org/data/2.5/forecast?units=${units}&lat=${latitude}&lon=${longitude}&appid=${apiKey}`
-    try {
-        //Make fetch request and stores it as response
-        const response = await fetch(url, { mode: 'cors' });
-      
-        //Store the JSON 
-        const forecastData = await response.json();
-        console.log(forecastData);
-
-        //Store city time zone (offset seconds)
-        localTimezone = forecastData.city.timezone;
-
-        // Clear Old Data
-        clearForecasts();
-
-        console.log(temperaturesByDay);
-
-        // Get Hourly Forecast Data 
-        forecastData.list.forEach(index => {
-            hourlyTemp = Math.round(index.main.temp) + unitSign;
-            forecastUTC = index.dt;
-
-            convertTime(forecastUTC, localTimezone);
-            displayHourlyForecast();
-            
-            dayTemps(hourlyTemp, dayName);
-        });
-        
-        convertTime(forecastData.list[0].dt, localTimezone);
-        displayDailyForecast();
-        
-  } catch (e){
-    console.log(e)
-  };  
-}
 function parseLocation(locationString) {
     const parts = locationString.split(',');
     // Extract parts to keep
@@ -285,58 +123,6 @@ function dayTemps(hourlyTemp, dayName) {
     if (!isNaN(tempValue)) {
         temperaturesByDay[dayName].push(tempValue);
     }
-}
-function displayHourlyForecast() {    
-    const hourDiv = document.createElement('div');
-    hourDiv.className = 'hourDiv';
-    hourlyForecastData.appendChild(hourDiv);
-
-    const hourDay = document.createElement('p');
-    hourDay.innerHTML = `${dayName} • ${localFormattedTime}`;
-    hourDay.className = 'hourDay';
-    hourDiv.appendChild(hourDay);
-
-    // const hourTime = document.createElement('p');
-    // hourTime.innerHTML = `${localFormattedTime}`;
-    // hourTime.className = 'hourTime';
-    // hourDiv.appendChild(hourTime);
-
-    const hourTemp = document.createElement('p');
-    hourTemp.innerHTML = hourlyTemp;
-    hourTemp.className = 'hourTemp';
-    hourDiv.appendChild(hourTemp);
-}
-function displayDailyForecast() {
-    calculateAverages();
-    console.log(averageTemps);
-    
-    // Input days in order of week starting with the day after the current day
-    const orderedDays = [];
-    currentDay = dayOfWeek;
-    for (let i = 0; i <= 6; i++) {
-        const dayOfWeek = (currentDay + i) % 7;
-        const dayName = ['Sun', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat'][dayOfWeek];
-        if (averageTemps[dayName] !== null) {
-            orderedDays.push(dayName);
-        }
-    }
-
-    // Display day temps in specified order
-    orderedDays.forEach(day => {    
-        const dayDiv = document.createElement('div');
-        dayDiv.className = 'dayDiv';
-        dailyForecastData.appendChild(dayDiv);
-
-        const dayDay = document.createElement('p');
-        dayDay.innerHTML = `${day}`;
-        dayDay.className = 'dayDay';
-        dayDiv.appendChild(dayDay);
-
-        const dayTemp = document.createElement('p');
-        dayTemp.innerHTML = averageTemps[day] + unitSign;
-        dayTemp.className = 'dayTemp';
-        dayDiv.appendChild(dayTemp);
-    });
 }
 function clearForecasts() {
     //Hourly ForecastData
@@ -445,6 +231,14 @@ function updateIcon(weatherDescription) {
     
     return iconImg;
 }
-document.addEventListener('DOMContentLoaded', function() {
-    updateBackground(localDate);
-});
+
+
+function showLoad() {
+    document.querySelector('.loading').style.display = 'block';
+    document.querySelector('.content').style.display = 'none';
+}
+
+function hideLoad() {
+    document.querySelector('.loading').style.display = 'none';
+    document.querySelector('.content').style.display = 'flex';
+}
