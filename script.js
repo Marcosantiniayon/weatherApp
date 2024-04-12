@@ -200,15 +200,6 @@ async function getForecast(latitude, longitude) {
 
         // Clear Old Data
         clearForecasts();
-        temperaturesByDay = {
-            'Sun': [],
-            'Mon': [],
-            'Tues': [],
-            'Wed': [],
-            'Thur': [],
-            'Fri': [],
-            'Sat': []
-        };
 
         console.log(temperaturesByDay);
 
@@ -348,13 +339,24 @@ function displayDailyForecast() {
     });
 }
 function clearForecasts() {
-    //Hourly ForecastData
+    //Hourly ForecastData Display
     while (hourlyForecastData.firstChild) {
         hourlyForecastData.removeChild(hourlyForecastData.firstChild);
     }
     while (dailyForecastData.firstChild) {
         dailyForecastData.removeChild(dailyForecastData.firstChild);
     }
+
+    //Daily Forecast Data for calculation
+    temperaturesByDay = {
+            'Sun': [],
+            'Mon': [],
+            'Tues': [],
+            'Wed': [],
+            'Thur': [],
+            'Fri': [],
+            'Sat': []
+        };
 }
 
 // Helper Functions
