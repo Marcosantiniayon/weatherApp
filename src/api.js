@@ -1,4 +1,4 @@
-async function getGeoCode(locationSearch) { //Gets location info, runs getWeather & getForecast, displays content
+export async function getGeoCode(locationSearch) { //Gets location info, runs getWeather & getForecast, displays content
     const url = `https://api.openweathermap.org/geo/1.0/direct?q=${locationSearch}&limit=5&appid=${apiKey}`
     showLoad();
 

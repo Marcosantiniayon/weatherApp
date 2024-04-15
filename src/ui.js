@@ -1,4 +1,18 @@
-document.addEventListener('DOMContentLoaded', function() {
+
+const unitBtn = document.querySelector('.unitBtn');
+const locationInput = document.querySelector('.locationInput');
+const locationOutput = document.querySelector('.locationOutput');
+const timeOutput = document.querySelector('.timeOutput');
+const currentTemp = document.querySelector('.currentTemp');
+const realtimeLow = document.querySelector('.realtimeLow');
+const realtimeHigh = document.querySelector('.realtimeHigh');
+const realtimeDescription = document.querySelector('.realtimeDescription');
+const icon = document.querySelector('.icon');
+const hourlyForecastData = document.querySelector('.hourlyForecastData');
+const dailyForecastData = document.querySelector('.dailyForecastData');
+const body = document.querySelector('body');
+
+document.addEventListener('DOMContentLoaded', function () {
     updateBackground(localDate);
 });
 locationInput.addEventListener('keypress', function (event) {
