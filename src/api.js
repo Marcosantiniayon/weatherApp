@@ -1,3 +1,22 @@
+import { showLoad, hideLoad } from '../src/ui'
+import { convertTime, clearForecasts, updateBackground } from '../src/utilities'
+
+const locationOutput = document.querySelector('.locationOutput');
+const timeOutput = document.querySelector('.timeOutput');
+const currentTemp = document.querySelector('.currentTemp');
+const realtimeLow = document.querySelector('.realtimeLow');
+const realtimeHigh = document.querySelector('.realtimeHigh');
+const realtimeDescription = document.querySelector('.realtimeDescription');
+const icon = document.querySelector('.icon');
+
+let units = "imperial";
+let unitSign = "F°";
+let currentTime = false;
+let localDate = new Date();
+
+
+const apiKey = "b08904ed3132c3c9a46ef2abcacb62d6";
+
 export async function getGeoCode(locationSearch) { //Gets location info, runs getWeather & getForecast, displays content
     const url = `https://api.openweathermap.org/geo/1.0/direct?q=${locationSearch}&limit=5&appid=${apiKey}`
     showLoad();
@@ -8,11 +27,11 @@ export async function getGeoCode(locationSearch) { //Gets location info, runs ge
       
       //Store the JSON 
       const geocode = await response.json();
-      city = geocode[0].name;
-      state = geocode[0].state;
-      country = geocode[0].country;
-      latitude = geocode[0].lat;
-      longitude = geocode[0].lon;
+      let city = geocode[0].name;
+      let state = geocode[0].state;
+      let country = geocode[0].country;
+      let latitude = geocode[0].lat;
+      let longitude = geocode[0].lon;
 
       //Display Location
       if (country === 'US') {
@@ -105,7 +124,7 @@ async function getForecast(latitude, longitude) {
         console.log(forecastData);
 
         //Store city time zone (offset seconds)
-        localTimezone = forecastData.city.timezone;
+        let localTimezone = forecastData.city.timezone;
 
         // Clear Old Data
         clearForecasts();

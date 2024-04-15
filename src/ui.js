@@ -1,44 +1,41 @@
 
 const unitBtn = document.querySelector('.unitBtn');
 const locationInput = document.querySelector('.locationInput');
-const locationOutput = document.querySelector('.locationOutput');
-const timeOutput = document.querySelector('.timeOutput');
-const currentTemp = document.querySelector('.currentTemp');
-const realtimeLow = document.querySelector('.realtimeLow');
-const realtimeHigh = document.querySelector('.realtimeHigh');
-const realtimeDescription = document.querySelector('.realtimeDescription');
-const icon = document.querySelector('.icon');
 const hourlyForecastData = document.querySelector('.hourlyForecastData');
 const dailyForecastData = document.querySelector('.dailyForecastData');
 const body = document.querySelector('body');
 
+let localDate = new Date();
+
+
 document.addEventListener('DOMContentLoaded', function () {
     updateBackground(localDate);
+    locationInput.addEventListener('keypress', function (event) {
+        if (event.key === 'Enter') {
+            event.preventDefault(); 
+            locationSearch = locationInput.value;
+            getGeoCode(locationSearch);
+        }
+    });
+    unitBtn.addEventListener('click', function () {
+        if (units === "imperial") { //Change to Metric (C), run getGeoCode
+            unitBtn.classList.remove('imperial');
+            unitBtn.classList.add('metric');
+            units = "metric";
+            unitSign = "C°"
+            getGeoCode(locationSearch);
+        } else { //Change to Imperial (F), run getGeoCode
+            unitBtn.classList.remove('metric');
+            unitBtn.classList.add('imperial');
+            units = "imperial";
+            unitSign = "F°"
+            getGeoCode(locationSearch);
+        }
+        unitBtn.innerHTML = unitSign;
+    });
 });
-locationInput.addEventListener('keypress', function (event) {
-    if (event.key === 'Enter') {
-        event.preventDefault(); 
-        locationSearch = locationInput.value;
-        getGeoCode(locationSearch);
-    }
-});
-unitBtn.addEventListener('click', function () {
-    if (units === "imperial") { //Change to Metric (C), run getGeoCode
-        unitBtn.classList.remove('imperial');
-        unitBtn.classList.add('metric');
-        units = "metric";
-        unitSign = "C°"
-        getGeoCode(locationSearch);
-    } else { //Change to Imperial (F), run getGeoCode
-        unitBtn.classList.remove('metric');
-        unitBtn.classList.add('imperial');
-        units = "imperial";
-        unitSign = "F°"
-        getGeoCode(locationSearch);
-    }
-    unitBtn.innerHTML = unitSign;
-});
-function displayHourlyForecast() {    
+
+export function displayHourlyForecast() {    
     const hourDiv = document.createElement('div');
     hourDiv.className = 'hourDiv';
     hourlyForecastData.appendChild(hourDiv);
@@ -58,7 +55,7 @@ function displayHourlyForecast() {
     hourTemp.className = 'hourTemp';
     hourDiv.appendChild(hourTemp);
 }
-function displayDailyForecast() {
+export function displayDailyForecast() {
     console.log(averageTemps);
     
     // Input days in order of week starting with the day after the current day
@@ -89,7 +86,7 @@ function displayDailyForecast() {
         dayDiv.appendChild(dayTemp);
     });
 }
-function updateBackground(localDate) {
+export function updateBackground(localDate) {
     const hours = localDate.getUTCHours(); // Use getUTCHours() because you've manually adjusted localDate to represent local time
 
     if(hours >= 17) {
@@ -104,7 +101,7 @@ function updateBackground(localDate) {
         body.className = 'night'; //Night
     }
 }
-function updateIcon(weatherDescription) {
+export function updateIcon(weatherDescription) {
     if (weatherDescription.innerHTML.includes('clouds')){
         iconImg = "icons/overcast.png"
     } else if (weatherDescription.innerHTML.includes('thunderstorm')){
@@ -121,11 +118,11 @@ function updateIcon(weatherDescription) {
     
     return iconImg;
 }
-function showLoad() {
+export function showLoad() {
     document.querySelector('.loading').style.display = 'none';
     document.querySelector('.content').style.display = 'flex';
 }
-function hideLoad() {
+export function hideLoad() {
     document.querySelector('.loading').style.display = 'block';
     document.querySelector('.content').style.display = 'none';
 }

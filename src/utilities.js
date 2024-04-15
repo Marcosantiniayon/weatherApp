@@ -33,7 +33,7 @@ function parseLocation(locationString) {
     }
     return parsedLocation;
 }
-function convertTime(forecastUTC, localTimezone) {
+export function convertTime(forecastUTC, localTimezone) {
     // Adjust the timestamp by the timezone offset to get the local time
     const localTimestamp = forecastUTC + localTimezone;
     localDate = new Date(localTimestamp * 1000);
@@ -64,7 +64,7 @@ function dayTemps(hourlyTemp, dayName) {
         temperaturesByDay[dayName].push(tempValue);
     }
 }
-function clearForecasts() {
+export function clearForecasts() {
     //Hourly ForecastData Display
     while (hourlyForecastData.firstChild) {
         hourlyForecastData.removeChild(hourlyForecastData.firstChild);
