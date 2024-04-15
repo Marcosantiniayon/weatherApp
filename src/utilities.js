@@ -1,4 +1,5 @@
 import { hourlyForecastData, dailyForecastData } from "./ui";
+import { hourlyTemp } from "./api";
 
 let localFormattedDate = '';
 let localFormattedTime = '';
@@ -10,7 +11,6 @@ let night = false;
 let formattedDate = '';
 let dayName = '';
 let dayOfWeek = '';
-let currentDay = '';
 let formattedTime = '';
 let averageTemp = 0;
 let temperaturesByDay = {
@@ -153,7 +153,7 @@ function formatTime(localDate) {
     currentTime = false;
     return formatted;
 }
-function calculateAverages() {
+export function calculateAverages() {
     // Loop through temperaturesByDay assigning both the day and temperature
     for (const [day, temps] of Object.entries(temperaturesByDay)) {
 
@@ -172,4 +172,37 @@ function calculateAverages() {
 
 }
 
-export { currentTime };
+// Set & Get Variables
+export function setCurrentTime(value) {
+    currentTime = value;
+}
+export function getCurrentTime() {
+    return currentTime;
+}
+
+export function setHours(value) {
+    night = hours;
+}
+
+export function getHours() {
+    return hours;
+}
+
+export function setNight(value) {
+    night = value;
+}
+
+export function getNight() {
+    return night;
+}
+
+export function setforecastUTC(value) {
+    forecastUTC = value;
+}
+
+export function getForecastUTC() {
+    return forecastUTC;
+}
+
+
+export { localFormattedDate, localFormattedTime, dayName, averageTemps, dayOfWeek };

@@ -1,5 +1,5 @@
-import { updateBackground, showLoad, hideLoad } from '../src/ui'
-import { currentTime, convertTime, clearForecasts } from '../src/utilities'
+import { unitSign, updateBackground, showLoad, hideLoad, displayHourlyForecast, displayDailyForecast } from '../src/ui'
+import { localFormattedDate, localFormattedTime, dayName, getHours, setCurrentTime, getNight, setNight, getForecastUTC, setforecastUTC, convertTime, clearForecasts, dayTemps, calculateAverages } from '../src/utilities'
 
 const locationOutput = document.querySelector('.locationOutput');
 const timeOutput = document.querySelector('.timeOutput');
@@ -10,7 +10,6 @@ const realtimeDescription = document.querySelector('.realtimeDescription');
 const icon = document.querySelector('.icon');
 
 let units = "imperial";
-let unitSign = "F°";
 let localDate = new Date();
 let hourlyTemp = 0;
 
@@ -63,7 +62,7 @@ async function getWeather(latitude, longitude) {
         console.log(weatherData);
 
         //Get Time
-        currentTime = true;
+        setCurrentTime(true);
         const timezone = weatherData.timezone;
         const currentDate = new Date();
         const currentUTC = (currentDate.getTime()) / 1000; 
@@ -72,10 +71,10 @@ async function getWeather(latitude, longitude) {
         updateBackground(localDate);
 
         // Update if day or night
-        if (hours >= 17 || hours <= 5) {
-            night = true
+        if (getHours() >= 17 || getHours() <= 5) {
+            setNight(true);
         } else {
-            night = false;
+            setNight(false);
         }
 
         //Display temp values
@@ -92,22 +91,22 @@ async function getWeather(latitude, longitude) {
         }
 
         //Update icon
-        if (realtimeDescription.innerHTML.includes('clouds') && night == false){
-            icon.src = "icons/overcast.png"
+        if (realtimeDescription.innerHTML.includes('clouds') && getNight() == false){
+            icon.src = "../icons/overcast.png"
         } else if (realtimeDescription.innerHTML.includes('thunderstorm')){
-            icon.src = "icons/thunder.png"
+            icon.src = "../icons/thunder.png"
         } else if (realtimeDescription.innerHTML.includes('drizzle')){
-            icon.src = "icons/sprinkles.png"
+            icon.src = "../icons/sprinkles.png"
         } else if (realtimeDescription.innerHTML.includes('rain')){
-            icon.src = "icons/rainy.png"
+            icon.src = "../icons/rainy.png"
         } else if (realtimeDescription.innerHTML.includes('snow')){
-            icon.src = "icons/snow.png"
-        } else if (realtimeDescription.innerHTML.includes('clear') && night == false){
-            icon.src = "icons/clear-day.png"
-        } else if (realtimeDescription.innerHTML.includes('clear') && night == true){
-            icon.src = "icons/clear-night.png"
-        } else if (realtimeDescription.innerHTML.includes('clouds') && night == true){
-            icon.src = "icons/cloudy-night.png"
+            icon.src = "../icons/snow.png"
+        } else if (realtimeDescription.innerHTML.includes('clear') && getNight() == false){
+            icon.src = "../icons/clear-day.png"
+        } else if (realtimeDescription.innerHTML.includes('clear') && getNight() == true){
+            icon.src = "../icons/clear-night.png"
+        } else if (realtimeDescription.innerHTML.includes('clouds') && getNight() == true){
+            icon.src = "../icons/cloudy-night.png"
         };
   } catch (e){
     console.log(e)
@@ -132,9 +131,9 @@ async function getForecast(latitude, longitude) {
         // Get Hourly Forecast Data 
         forecastData.list.forEach(index => {
             hourlyTemp = Math.round(index.main.temp) + unitSign;
-            forecastUTC = index.dt;
+            setforecastUTC(index.dt);
 
-            convertTime(forecastUTC, localTimezone);
+            convertTime(getForecastUTC(), localTimezone);
             displayHourlyForecast();
             
             dayTemps(hourlyTemp, dayName);
@@ -148,3 +147,5 @@ async function getForecast(latitude, longitude) {
     console.log(e)
   };  
 }
+
+export { hourlyTemp };

@@ -1,3 +1,6 @@
+import { dayName, localFormattedTime, averageTemps, dayOfWeek } from "./utilities";
+import { hourlyTemp } from "./api";
+
 
 const unitBtn = document.querySelector('.unitBtn');
 const locationInput = document.querySelector('.locationInput');
@@ -5,6 +8,8 @@ const hourlyForecastData = document.querySelector('.hourlyForecastData');
 const dailyForecastData = document.querySelector('.dailyForecastData');
 const body = document.querySelector('body');
 
+let currentDay = '';
+let unitSign = "F°";
 let localDate = new Date();
 
 
@@ -44,11 +49,6 @@ export function displayHourlyForecast() {
     hourDay.innerHTML = `${dayName} • ${localFormattedTime}`;
     hourDay.className = 'hourDay';
     hourDiv.appendChild(hourDay);
-
-    // const hourTime = document.createElement('p');
-    // hourTime.innerHTML = `${localFormattedTime}`;
-    // hourTime.className = 'hourTime';
-    // hourDiv.appendChild(hourTime);
 
     const hourTemp = document.createElement('p');
     hourTemp.innerHTML = hourlyTemp;
@@ -128,4 +128,4 @@ export function hideLoad() {
 }
 
 
-export { hourlyForecastData, dailyForecastData };
+export { hourlyForecastData, dailyForecastData, unitSign };
