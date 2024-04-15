@@ -1,5 +1,5 @@
-import { showLoad, hideLoad } from '../src/ui'
-import { convertTime, clearForecasts, updateBackground } from '../src/utilities'
+import { updateBackground, showLoad, hideLoad } from '../src/ui'
+import { currentTime, convertTime, clearForecasts } from '../src/utilities'
 
 const locationOutput = document.querySelector('.locationOutput');
 const timeOutput = document.querySelector('.timeOutput');
@@ -11,8 +11,8 @@ const icon = document.querySelector('.icon');
 
 let units = "imperial";
 let unitSign = "F°";
-let currentTime = false;
 let localDate = new Date();
+let hourlyTemp = 0;
 
 
 const apiKey = "b08904ed3132c3c9a46ef2abcacb62d6";
@@ -128,8 +128,6 @@ async function getForecast(latitude, longitude) {
 
         // Clear Old Data
         clearForecasts();
-
-        console.log(temperaturesByDay);
 
         // Get Hourly Forecast Data 
         forecastData.list.forEach(index => {

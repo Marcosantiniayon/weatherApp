@@ -8,7 +8,8 @@ entry: './src/script.js', // Your main JavaScript file
   devtool: 'inline-source-map',
    plugins: [
      new HtmlWebpackPlugin({
-       title: 'Development',
+         title: 'Development',
+         template: './src/index.html'
      }),
    ],
   output: {

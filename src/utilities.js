@@ -1,5 +1,38 @@
+import { hourlyForecastData, dailyForecastData } from "./ui";
 
-function parseLocation(locationString) {
+let localFormattedDate = '';
+let localFormattedTime = '';
+let hours = 0;
+let currentTime = false;
+let forecastUTC = 0;
+let localTimezone = 0;
+let night = false;
+let formattedDate = '';
+let dayName = '';
+let dayOfWeek = '';
+let currentDay = '';
+let formattedTime = '';
+let averageTemp = 0;
+let temperaturesByDay = {
+    'Sun': [],
+    'Mon': [],
+    'Tues': [],
+    'Wed': [],
+    'Thur': [],
+    'Fri': [],
+    'Sat': []
+};
+let averageTemps = {
+    'Sun': [],
+    'Mon': [],
+    'Tues': [],
+    'Wed': [],
+    'Thur': [],
+    'Fri': [],
+    'Sat': []
+}
+
+export function parseLocation(locationString) {
     const parts = locationString.split(',');
     // Extract parts to keep
     let city = parts[0].trim(); // Removes leading and trailing whitespace
@@ -36,8 +69,8 @@ function parseLocation(locationString) {
 export function convertTime(forecastUTC, localTimezone) {
     // Adjust the timestamp by the timezone offset to get the local time
     const localTimestamp = forecastUTC + localTimezone;
-    localDate = new Date(localTimestamp * 1000);
-    localTime = localDate.getTime();
+    let localDate = new Date(localTimestamp * 1000);
+    let localTime = localDate.getTime();
 
     // Array of month names
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -55,7 +88,7 @@ export function convertTime(forecastUTC, localTimezone) {
     dayName = getDay(localDate);
 
 }
-function dayTemps(hourlyTemp, dayName) {
+export function dayTemps(hourlyTemp, dayName) {
     // Convert hourlyTemp from string to number and remove the unit
     const tempValue = parseFloat(hourlyTemp);
 
@@ -138,3 +171,5 @@ function calculateAverages() {
     }
 
 }
+
+export { currentTime };

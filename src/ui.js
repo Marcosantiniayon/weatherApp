@@ -126,3 +126,6 @@ export function hideLoad() {
     document.querySelector('.loading').style.display = 'block';
     document.querySelector('.content').style.display = 'none';
 }
+
+
+export { hourlyForecastData, dailyForecastData };
