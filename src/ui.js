@@ -1,6 +1,5 @@
-import { dayName, localFormattedTime, averageTemps, dayOfWeek } from "./utilities";
-import { hourlyTemp } from "./api";
-
+import { dayName, localFormattedTime, averageTemps, dayOfWeek } from "../src/utilities";
+import { hourlyTemp, getGeoCode } from "../src/api";
 
 const unitBtn = document.querySelector('.unitBtn');
 const locationInput = document.querySelector('.locationInput');
@@ -8,10 +7,15 @@ const hourlyForecastData = document.querySelector('.hourlyForecastData');
 const dailyForecastData = document.querySelector('.dailyForecastData');
 const body = document.querySelector('body');
 
+let locationSearch = 'Phoenix';
+let iconImg = "";
 let currentDay = '';
 let unitSign = "F°";
 let localDate = new Date();
 
+window.onload = function(){
+    getGeoCode(locationSearch);
+}
 
 document.addEventListener('DOMContentLoaded', function () {
     updateBackground(localDate);
@@ -123,9 +127,7 @@ export function showLoad() {
     document.querySelector('.content').style.display = 'flex';
 }
 export function hideLoad() {
-    document.querySelector('.loading').style.display = 'block';
-    document.querySelector('.content').style.display = 'none';
+    document.querySelector('.loading').style.display = 'none';
+    document.querySelector('.content').style.display = 'flex';
 }
-
-
 export { hourlyForecastData, dailyForecastData, unitSign };

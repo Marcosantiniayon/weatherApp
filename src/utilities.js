@@ -1,17 +1,13 @@
-import { hourlyForecastData, dailyForecastData } from "./ui";
-import { hourlyTemp } from "./api";
+import { hourlyForecastData, dailyForecastData } from "../src/ui";
 
 let localFormattedDate = '';
 let localFormattedTime = '';
 let hours = 0;
 let currentTime = false;
 let forecastUTC = 0;
-let localTimezone = 0;
 let night = false;
-let formattedDate = '';
 let dayName = '';
 let dayOfWeek = '';
-let formattedTime = '';
 let averageTemp = 0;
 let temperaturesByDay = {
     'Sun': [],
