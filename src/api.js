@@ -1,5 +1,5 @@
 import { unitSign, updateBackground, showLoad, hideLoad, displayHourlyForecast, displayDailyForecast } from '../src/ui'
-import { localFormattedDate, localFormattedTime, dayName, getHours, setCurrentTime, getNight, setNight, getForecastUTC, setforecastUTC, convertTime, clearForecasts, dayTemps, calculateAverages } from '../src/utilities'
+import { localFormattedDate, localFormattedTime, dayName, getUnits, getHours, setCurrentTime, getNight, setNight, getForecastUTC, setforecastUTC, convertTime, clearForecasts, dayTemps, calculateAverages } from '../src/utilities'
 
 const locationOutput = document.querySelector('.locationOutput');
 const timeOutput = document.querySelector('.timeOutput');
@@ -9,10 +9,8 @@ const realtimeHigh = document.querySelector('.realtimeHigh');
 const realtimeDescription = document.querySelector('.realtimeDescription');
 const icon = document.querySelector('.icon');
 
-let units = "imperial";
 let localDate = new Date();
 let hourlyTemp = 0;
-
 
 const apiKey = "b08904ed3132c3c9a46ef2abcacb62d6";
 
@@ -52,7 +50,7 @@ export async function getGeoCode(locationSearch) { //Gets location info, runs ge
   
 }
 async function getWeather(latitude, longitude) {
-    const url = `https://api.openweathermap.org/data/2.5/weather?units=${units}&lat=${latitude}&lon=${longitude}&appid=${apiKey}`
+    const url = `https://api.openweathermap.org/data/2.5/weather?units=${getUnits()}&lat=${latitude}&lon=${longitude}&appid=${apiKey}`
     try {
         //Fetch request and store it as response
         const response = await fetch(url, { mode: 'cors' });
@@ -82,7 +80,7 @@ async function getWeather(latitude, longitude) {
         currentTemp.innerHTML = Math.round(weatherData.main.temp);
         realtimeDescription.innerHTML = weatherData.weather[0].description;
 
-        if (units === 'imperial') {
+        if (getUnits() === 'imperial') {
             realtimeLow.innerHTML = "L: " + Math.round(weatherData.main.temp_min) + "°F";
             realtimeHigh.innerHTML = "H: " + Math.round(weatherData.main.temp_max) + "°F";
         } else {
@@ -113,7 +111,7 @@ async function getWeather(latitude, longitude) {
   };  
 }
 async function getForecast(latitude, longitude) {
-    const url = `https://api.openweathermap.org/data/2.5/forecast?units=${units}&lat=${latitude}&lon=${longitude}&appid=${apiKey}`
+    const url = `https://api.openweathermap.org/data/2.5/forecast?units=${getUnits()}&lat=${latitude}&lon=${longitude}&appid=${apiKey}`
     try {
         //Make fetch request and stores it as response
         const response = await fetch(url, { mode: 'cors' });

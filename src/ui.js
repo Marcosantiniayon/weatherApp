@@ -1,4 +1,4 @@
-import { dayName, localFormattedTime, averageTemps, dayOfWeek } from "../src/utilities";
+import { dayName, localFormattedTime, averageTemps, dayOfWeek, getUnits, setUnits } from "../src/utilities";
 import { hourlyTemp, getGeoCode } from "../src/api";
 
 const unitBtn = document.querySelector('.unitBtn');
@@ -27,16 +27,16 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
     unitBtn.addEventListener('click', function () {
-        if (units === "imperial") { //Change to Metric (C), run getGeoCode
+        if (getUnits() === "imperial") { //Change to Metric (C), run getGeoCode
             unitBtn.classList.remove('imperial');
             unitBtn.classList.add('metric');
-            units = "metric";
+            setUnits('metric');
             unitSign = "C°"
             getGeoCode(locationSearch);
         } else { //Change to Imperial (F), run getGeoCode
             unitBtn.classList.remove('metric');
             unitBtn.classList.add('imperial');
-            units = "imperial";
+            setUnits('imperial');
             unitSign = "F°"
             getGeoCode(locationSearch);
         }
@@ -123,8 +123,8 @@ export function updateIcon(weatherDescription) {
     return iconImg;
 }
 export function showLoad() {
-    document.querySelector('.loading').style.display = 'none';
-    document.querySelector('.content').style.display = 'flex';
+    document.querySelector('.loading').style.display = 'block';
+    document.querySelector('.content').style.display = 'none';
 }
 export function hideLoad() {
     document.querySelector('.loading').style.display = 'none';

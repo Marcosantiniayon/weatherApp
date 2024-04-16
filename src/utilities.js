@@ -1,5 +1,6 @@
 import { hourlyForecastData, dailyForecastData } from "../src/ui";
 
+let units = "imperial";
 let localFormattedDate = '';
 let localFormattedTime = '';
 let hours = 0;
@@ -9,6 +10,7 @@ let night = false;
 let dayName = '';
 let dayOfWeek = '';
 let averageTemp = 0;
+
 let temperaturesByDay = {
     'Sun': [],
     'Mon': [],
@@ -18,6 +20,7 @@ let temperaturesByDay = {
     'Fri': [],
     'Sat': []
 };
+
 let averageTemps = {
     'Sun': [],
     'Mon': [],
@@ -177,7 +180,7 @@ export function getCurrentTime() {
 }
 
 export function setHours(value) {
-    night = hours;
+    hours = value;
 }
 
 export function getHours() {
@@ -199,6 +202,16 @@ export function setforecastUTC(value) {
 export function getForecastUTC() {
     return forecastUTC;
 }
+
+export function setUnits(value){
+    units = value;
+}
+
+export function getUnits() {
+    return units;
+
+}
+
 
 
 export { localFormattedDate, localFormattedTime, dayName, averageTemps, dayOfWeek };
