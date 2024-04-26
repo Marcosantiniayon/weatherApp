@@ -1,4 +1,4 @@
-import { dayName, localFormattedTime, averageTemps, dayOfWeek, getUnits, setUnits } from "../src/utilities";
+import { dayName, localFormattedTime, averageTemps, dayOfWeek, getUnits, setUnits, getHours } from "../src/utilities";
 import { hourlyTemp, getGeoCode } from "../src/api";
 
 const unitBtn = document.querySelector('.unitBtn');
@@ -90,20 +90,21 @@ export function displayDailyForecast() {
         dayDiv.appendChild(dayTemp);
     });
 }
-export function updateBackground(localDate) {
-    const hours = localDate.getUTCHours(); // Use getUTCHours() because you've manually adjusted localDate to represent local time
-
-    if(hours >= 17) {
-        body.className = 'evening';
-    } else if (hours >= 12) {
-        body.className = 'afternoon';  // Afternoon
-    } else if(hours >=6) {
-        body.className = 'morning'; //Morning
-    } else if(hours >=4){
+export function updateBackground() {
+    console.log(getHours());
+    const hours = getHours();
+    if(hours >=4 && hours<=7){
         body.className = 'dawn'; //Dawn
+    } else if(hours >=7 && hours <=12) {
+        body.className = 'morning'; //Morning
+    } else if (hours >= 12 && hours <=17) {
+        body.className = 'afternoon';  // Afternoon
+    } else if(hours >= 17 && hours <= 20) {
+        body.className = 'evening';
     } else {
         body.className = 'night'; //Night
     }
+    console.log(body.className);
 }
 export function updateIcon(weatherDescription) {
     if (weatherDescription.innerHTML.includes('clouds')){

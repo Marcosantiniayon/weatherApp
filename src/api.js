@@ -69,7 +69,7 @@ async function getWeather(latitude, longitude) {
         updateBackground(localDate);
 
         // Update if day or night
-        if (getHours() >= 17 || getHours() <= 5) {
+        if (getHours() >= 18 || getHours() <= 5) {
             setNight(true);
         } else {
             setNight(false);
