@@ -14,10 +14,10 @@ entry: './src/ui.js', // Your main JavaScript file
    ],
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'docs'),
   },
   devServer: {
-    static: './dist', // Folder to serve files from
+    static: './docs', // Folder to serve files from
     open: true, // Open the browser after server had been started
     port: 3000 // Port to run the server on
   },
