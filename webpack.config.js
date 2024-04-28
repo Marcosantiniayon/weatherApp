@@ -32,7 +32,14 @@ entry: './src/ui.js', // Your main JavaScript file
             presets: ['@babel/preset-env']
           }
         }
-      }
+      },
+      {
+      test: /\.css$/, // Look for CSS files
+      use: [
+        'style-loader', // Injects styles into the DOM using multiple <style></style>
+        'css-loader'    // Resolves @import and url() like import/require() and will resolve them
+      ]
+    }
     ]
   }
 };

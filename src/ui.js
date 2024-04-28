@@ -1,5 +1,6 @@
 import { dayName, localFormattedTime, averageTemps, dayOfWeek, getUnits, setUnits, getHours } from "../src/utilities";
 import { hourlyTemp, getGeoCode } from "../src/api";
+import '../src/style.css'; 
 
 const unitBtn = document.querySelector('.unitBtn');
 const locationInput = document.querySelector('.locationInput');
