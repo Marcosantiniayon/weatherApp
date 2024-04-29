@@ -1,7 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-
 module.exports = {
   mode: 'development',
 entry: './src/ui.js', // Your main JavaScript file
@@ -15,6 +14,7 @@ entry: './src/ui.js', // Your main JavaScript file
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'docs'),
+    // publicPath: '/',
   },
   devServer: {
     static: './docs', // Folder to serve files from

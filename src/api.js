@@ -1,4 +1,4 @@
-import { unitSign, updateBackground, showLoad, hideLoad, displayHourlyForecast, displayDailyForecast } from '../src/ui'
+import { unitSign, updateBackground, showLoad, hideLoad, displayHourlyForecast, displayDailyForecast, updateIcon } from '../src/ui'
 import { localFormattedDate, localFormattedTime, dayName, getUnits, getHours, setCurrentTime, getNight, setNight, getForecastUTC, setforecastUTC, convertTime, clearForecasts, dayTemps, calculateAverages } from '../src/utilities'
 
 const locationOutput = document.querySelector('.locationOutput');
@@ -7,7 +7,6 @@ const currentTemp = document.querySelector('.currentTemp');
 const realtimeLow = document.querySelector('.realtimeLow');
 const realtimeHigh = document.querySelector('.realtimeHigh');
 const realtimeDescription = document.querySelector('.realtimeDescription');
-const icon = document.querySelector('.icon');
 
 let localDate = new Date();
 let hourlyTemp = 0;
@@ -89,23 +88,8 @@ async function getWeather(latitude, longitude) {
         }
 
         //Update icon
-        if (realtimeDescription.innerHTML.includes('clouds') && getNight() == false){
-            icon.src = "../icons/overcast.png"
-        } else if (realtimeDescription.innerHTML.includes('thunderstorm')){
-            icon.src = "../icons/thunder.png"
-        } else if (realtimeDescription.innerHTML.includes('drizzle')){
-            icon.src = "../icons/sprinkles.png"
-        } else if (realtimeDescription.innerHTML.includes('rain')){
-            icon.src = "../icons/rainy.png"
-        } else if (realtimeDescription.innerHTML.includes('snow')){
-            icon.src = "../icons/snow.png"
-        } else if (realtimeDescription.innerHTML.includes('clear') && getNight() == false){
-            icon.src = "../icons/clear-day.png"
-        } else if (realtimeDescription.innerHTML.includes('clear') && getNight() == true){
-            icon.src = "../icons/clear-night.png"
-        } else if (realtimeDescription.innerHTML.includes('clouds') && getNight() == true){
-            icon.src = "../icons/cloudy-night.png"
-        };
+        updateIcon(realtimeDescription);
+        
   } catch (e){
     console.log(e)
   };  

@@ -1,4 +1,4 @@
-import { dayName, localFormattedTime, averageTemps, dayOfWeek, getUnits, setUnits, getHours } from "../src/utilities";
+import { dayName, localFormattedTime, averageTemps, dayOfWeek, getUnits, setUnits, getHours, getNight } from "../src/utilities";
 import { hourlyTemp, getGeoCode } from "../src/api";
 import '../src/style.css'; 
 
@@ -9,7 +9,6 @@ const dailyForecastData = document.querySelector('.dailyForecastData');
 const body = document.querySelector('body');
 
 let locationSearch = 'Phoenix';
-let iconImg = "";
 let currentDay = '';
 let unitSign = "F°";
 let localDate = new Date();
@@ -61,7 +60,6 @@ export function displayHourlyForecast() {
     hourDiv.appendChild(hourTemp);
 }
 export function displayDailyForecast() {
-    console.log(averageTemps);
     
     // Input days in order of week starting with the day after the current day
     const orderedDays = [];
@@ -92,7 +90,6 @@ export function displayDailyForecast() {
     });
 }
 export function updateBackground() {
-    console.log(getHours());
     const hours = getHours();
     if(hours >=4 && hours<=7){
         body.className = 'dawn'; //Dawn
@@ -105,24 +102,29 @@ export function updateBackground() {
     } else {
         body.className = 'night'; //Night
     }
-    console.log(body.className);
 }
 export function updateIcon(weatherDescription) {
-    if (weatherDescription.innerHTML.includes('clouds')){
-        iconImg = "icons/overcast.png"
+    const icon = document.querySelector('.icon');
+
+    if (weatherDescription.innerHTML.includes('clouds') && getNight() == false){
+        icon.src = "icons/overcast.png"
     } else if (weatherDescription.innerHTML.includes('thunderstorm')){
-        iconImg = "icons/thunder.png"
+        icon.src = "icons/thunder.png"
     } else if (weatherDescription.innerHTML.includes('drizzle')){
-        iconImg = "icons/sprinkles.png"
+        icon.src = "icons/sprinkles.png"
     } else if (weatherDescription.innerHTML.includes('rain')){
-        iconImg = "icons/rainy.png"
+        icon.src = "icons/rainy.png"
     } else if (weatherDescription.innerHTML.includes('snow')){
-        iconImg = "icons/snow.png"
-    } else if (weatherDescription.innerHTML.includes('clear')){
-        iconImg = "icons/clear-day.png"
+        icon.src = "icons/snow.png"
+    } else if (weatherDescription.innerHTML.includes('clear') && getNight() == false){
+        icon.src = "icons/clear-day.png"
+    } else if (weatherDescription.innerHTML.includes('clear') && getNight() == true){
+        icon.src = "icons/clear-night.png"
+    } else if (weatherDescription.innerHTML.includes('clouds') && getNight() == true){
+        icon.src = "icons/cloudy-night.png"
     };
-    
-    return iconImg;
+
+    return icon.src;
 }
 export function showLoad() {
     document.querySelector('.loading').style.display = 'block';
