@@ -34,12 +34,25 @@ entry: './src/ui.js', // Your main JavaScript file
         }
       },
       {
-      test: /\.css$/, // Look for CSS files
-      use: [
-        'style-loader', // Injects styles into the DOM using multiple <style></style>
-        'css-loader'    // Resolves @import and url() like import/require() and will resolve them
-      ]
-    }
+        test: /\.css$/, // Look for CSS files
+        use: [
+          'style-loader', // Injects styles into the DOM using multiple <style></style>
+          'css-loader'    // Resolves @import and url() like import/require() and will resolve them
+        ]
+      },
+      {
+        test: /\.(png|jpe?g|gif|svg)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              outputPath: 'icons',  // This places all images processed by file-loader into an 'icons' folder in the output directory
+              publicPath: 'icons',  // This will prepend 'icons/' to the URLs within your application, adjust as necessary
+              name: '[name].[ext]'  // Keeps original file name and extension
+            }
+          }
+        ]
+      }
     ]
   }
 };
