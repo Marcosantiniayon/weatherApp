@@ -91,11 +91,11 @@ export function displayDailyForecast() {
 }
 export function updateBackground() {
     const hours = getHours();
-    if(hours >=4 && hours<=7){
+    if(hours >=4 && hours<=6){
         body.className = 'dawn'; //Dawn
-    } else if(hours >=7 && hours <=12) {
+    } else if(hours >=7 && hours <=11) {
         body.className = 'morning'; //Morning
-    } else if (hours >= 12 && hours <=17) {
+    } else if (hours >= 12 && hours <=16) {
         body.className = 'afternoon';  // Afternoon
     } else if(hours >= 17 && hours <= 20) {
         body.className = 'evening';
