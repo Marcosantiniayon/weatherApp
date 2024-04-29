@@ -1,6 +1,13 @@
 import { dayName, localFormattedTime, averageTemps, dayOfWeek, getUnits, setUnits, getHours } from "../src/utilities";
 import { hourlyTemp, getGeoCode } from "../src/api";
 import '../src/style.css'; 
+import overcastIcon from '../icons/overcast.png';
+import thunderIcon from '../icons/thunder.png';
+import sprinklesIcon from '../icons/sprinkles.png';
+import rainyIcon from '../icons/rainy.png';
+import snowIcon from '../icons/snow.png';
+import clearDayIcon from '../icons/clear-day.png';
+
 
 const unitBtn = document.querySelector('.unitBtn');
 const locationInput = document.querySelector('.locationInput');
@@ -109,17 +116,17 @@ export function updateBackground() {
 }
 export function updateIcon(weatherDescription) {
     if (weatherDescription.innerHTML.includes('clouds')){
-        iconImg = "icons/overcast.png"
+        iconImg = overcastIcon;
     } else if (weatherDescription.innerHTML.includes('thunderstorm')){
-        iconImg = "icons/thunder.png"
+        iconImg = thunderIcon;
     } else if (weatherDescription.innerHTML.includes('drizzle')){
-        iconImg = "icons/sprinkles.png"
+        iconImg = sprinklesIcon;
     } else if (weatherDescription.innerHTML.includes('rain')){
-        iconImg = "icons/rainy.png"
+        iconImg = rainyIcon;
     } else if (weatherDescription.innerHTML.includes('snow')){
-        iconImg = "icons/snow.png"
+        iconImg = snowIcon;
     } else if (weatherDescription.innerHTML.includes('clear')){
-        iconImg = "icons/clear-day.png"
+        iconImg = clearDayIcon;
     };
     
     return iconImg;
